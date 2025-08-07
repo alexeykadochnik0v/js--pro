@@ -11,25 +11,28 @@ options.dependencies.push(
 
 // Полностью отключаем навигацию колесиком мыши
 document.addEventListener("DOMContentLoaded", function () {
-  // Перехватываем все события колесика мыши
-  document.addEventListener(
-    "wheel",
-    function (e) {
-      // Всегда останавливаем распространение события к reveal.js
-      e.stopPropagation();
-      e.stopImmediatePropagation();
+  // Не блокируем прокрутку на главной странице (index.md)
+  if (!window.location.pathname.endsWith("/index.md")) {
+    // Перехватываем все события колесика мыши
+    document.addEventListener(
+      "wheel",
+      function (e) {
+        // Всегда останавливаем распространение события к reveal.js
+        e.stopPropagation();
+        e.stopImmediatePropagation();
 
-      // Находим текущий активный слайд
-      const currentSlide = document.querySelector(
-        ".reveal .slides section.present"
-      );
-      if (currentSlide) {
-        // Прокручиваем содержимое слайда
-        currentSlide.scrollTop += e.deltaY;
-      }
-    },
-    { capture: true, passive: false }
-  );
+        // Находим текущий активный слайд
+        const currentSlide = document.querySelector(
+          ".reveal .slides section.present"
+        );
+        if (currentSlide) {
+          // Прокручиваем содержимое слайда
+          currentSlide.scrollTop += e.deltaY;
+        }
+      },
+      { capture: true, passive: false }
+    );
+  }
 
   // Добавляем плавную прокрутку для всех слайдов
   const observer = new MutationObserver(function (mutations) {
