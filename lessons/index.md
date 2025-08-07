@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
   gap: 1.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0;
   padding: 2vw;
   box-sizing: border-box;
 }
@@ -41,36 +41,18 @@
   padding: 0.45rem 1.1rem;
   min-width: 200px;
   margin-bottom: 0.5rem;
-  transition: box-shadow 0.15s, border 0.15s;
+  transition: box-shadow 0.15s;
   text-decoration: none;
   color: #1a2330;
   font-weight: 500;
   box-shadow: 0 1px 4px #0001;
   font-size: 1rem;
 }
-.lesson-card:hover {
-  box-shadow: 0 2px 8px #b4d5ff44;
-  border-color: #b4d5ff;
-  background: #f7fbff;
-  transition: box-shadow 0.25s, border 0.25s, background 0.25s;
+.reveal .slides {
+    margin: 0 !important;
 }
-.reveal .slides, .reveal .present {
-  margin: 0 !important;
-  padding: 0 !important;
-  text-align: left !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: auto !important;
-  position: relative !important;
-  box-sizing: border-box !important;
-}
-
-.reveal .controls, .reveal .navigate-right, .reveal .navigate-left, .reveal .navigate-up, .reveal .navigate-down {
-display: none !important;
+.reveal a:hover {
+    border: 1px solid #e0e0e0;
 }
 
 <script>
