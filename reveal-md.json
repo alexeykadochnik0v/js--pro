@@ -5,5 +5,16 @@
   "watch": true,
   "css": ".reveal-md/styles.css",
   "listingTemplate": ".reveal-md/listing.html",
-  "scripts": ["plugins.js"]
+  "scripts": ["plugins.js"],
+  "revealOptions": {
+    "controls": true,
+    "progress": true,
+    "center": false,
+    "hash": true,
+    "transition": "slide",
+    "mouseWheel": true,
+    "touch": true,
+    "keyboard": true,
+    "overview": true
+  }
 }
