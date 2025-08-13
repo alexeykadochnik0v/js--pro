@@ -80,6 +80,10 @@ body {
 /* Убираем элементы управления и прогресс-бар */
 .reveal .controls,
 .reveal .progress,
-.reveal .slide-number {
+.reveal .slide-number,
+.backgrounds,
+.backgrounds .slide-background,
+.backgrounds .slide-background-content,
+.table-of-contents {
   display: none !important;
 }
