@@ -1,5 +1,5 @@
 ---
-css: ../.reveal-md/index-styles.css
+css: .reveal-md/index-styles.css
 ---
 
 - [Занятие 1 - Введение в курс JavaScript Professional - Знакомство с программной командой и инфраструктурой. Повторение основ JavaScript](lesson01/lesson.md)
