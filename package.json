@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "reveal-md",
+    "build": "reveal-md lessons/index.md --static dist --assets-dir dist/_assets",
+    "fix:metadata": "node fix-metadata.js",
+    "fix:separators": "node add-separators.js",
+    "fix:quotes": "node fix-quotes.js",
     "lint:prettier": "prettier --check .",
     "lint:spell": "yaspeller .",
     "lint": "npm run lint:prettier && npm run lint:code",

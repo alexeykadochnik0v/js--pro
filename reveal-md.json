@@ -12,7 +12,7 @@
     "center": false,
     "hash": true,
     "transition": "slide",
-    "mouseWheel": true,
+    "mouseWheel": false,
     "touch": true,
     "keyboard": true,
     "overview": true
