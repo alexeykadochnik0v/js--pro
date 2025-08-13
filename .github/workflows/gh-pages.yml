@@ -37,7 +37,18 @@ jobs:
 
       - name: Build
         run: |
+          # Переименовываем index-html.md в index.md перед сборкой
+          cp lessons/index-html.md lessons/index.md.bak
+          cp lessons/index.md lessons/index.md.local
+          cp lessons/index-html.md lessons/index.md
+
+          # Собираем статический сайт
           npx reveal-md lessons/ --static dist --static-dirs=plugins
+
+          # Восстанавливаем оригинальный index.md для локальной разработки
+          mv lessons/index.md.local lessons/index.md
+
+          # Копируем дополнительные файлы
           rsync -a -r lessons/ dist/
           cp -r plugins dist/_assets/
           cp -r .reveal-md dist/_assets/
