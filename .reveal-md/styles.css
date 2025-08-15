@@ -4,6 +4,7 @@
 
 .reveal pre code {
   max-height: 80%;
+  overflow: auto;
 }
 
 * {
@@ -22,4 +23,10 @@
 
 .section[data-markdown-parsed="true"] i {
   font-style: italic;
+}
+
+/* Allow long slide content to scroll vertically */
+.reveal .slides section {
+  max-height: 100%;
+  overflow-y: auto;
 }

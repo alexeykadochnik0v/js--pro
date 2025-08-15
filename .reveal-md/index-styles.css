@@ -1,89 +1,69 @@
-/* Простой список ссылок без лишних элементов */
+/* Минимальные стили для страницы индекса */
+
+/* Прокрутка только у страницы */
+html,
 body {
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: auto !important;
+  margin: 0;
+  overflow: hidden; /* убираем прокрутку у страницы */
 }
 
-.reveal-viewport {
-  height: auto !important;
-  overflow: auto !important;
-}
-
+/* Чуть компактнее шрифт */
 .reveal {
-  position: static !important;
-  height: auto !important;
-  overflow: visible !important;
-  font-size: 14px !important;
-  background: white !important;
+  font-size: 18px;
+}
+
+/* Левое выравнивание и снятие центрирования/позиционирования */
+.reveal {
+  height: 100vh; /* фиксируем высоту области презентации */
+  overflow: hidden; /* исключаем прокрутку у контейнера презентации */
 }
 
 .reveal .slides {
   position: static !important;
-  width: auto !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  transform: none !important;
-  perspective: none !important;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100% !important;
+  margin: 0;
+  padding: 0 20px;
   text-align: left !important;
-}
-
-.reveal .slides > section {
-  position: static !important;
-  width: auto !important;
-  height: auto !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 10px 20px !important;
+  overflow-y: auto; /* одна вертикальная прокрутка */
+  overflow-x: hidden; /* скрыть горизонтальный скролл */
+  -webkit-overflow-scrolling: touch; /* плавная прокрутка на тач-устройствах */
   transform: none !important;
-  background: white !important;
+  padding-bottom: 32px;
 }
 
-.reveal h1,
-.reveal h2,
-.reveal h3,
-.reveal h4,
-.reveal h5,
-.reveal h6 {
-  display: none !important;
+/* Отключаем внутренние скроллы секций на главной */
+.reveal .slides > section {
+  overflow: visible !important;
+  height: auto !important;
 }
 
 .reveal ul {
-  list-style-type: disc !important;
-  margin: 0 !important;
-  padding-left: 20px !important;
+  margin: 0;
+  padding-left: 22px;
 }
 
 .reveal li {
-  margin: 2px 0 !important;
-  font-size: 14px !important;
-  line-height: 1.4 !important;
-  display: list-item !important;
+  margin: 4px 0;
+  line-height: 1.3;
 }
 
 .reveal a {
-  color: #0066cc !important;
-  text-decoration: underline !important;
-  font-size: 14px !important;
-  font-family: Arial, sans-serif !important;
+  color: #0645ad;
+  text-decoration: underline;
+  word-break: break-word; /* перенос длинных ссылок */
+  overflow-wrap: anywhere; /* не даем разрастаться по ширине */
 }
 
 .reveal a:hover {
-  color: #004499 !important;
+  color: #0b49a1;
+  text-decoration: none;
 }
 
-.reveal a:visited {
-  color: #551a8b !important;
-}
-
-/* Убираем элементы управления и прогресс-бар */
-.reveal .controls,
-.reveal .progress,
-.reveal .slide-number,
-.backgrounds,
-.backgrounds .slide-background,
-.backgrounds .slide-background-content,
-.table-of-contents {
+/* Убираем фоновые слои Reveal на главной, чтобы не влияли на размеры/скролл */
+.reveal .backgrounds,
+.reveal .backgrounds .slide-background,
+.reveal .backgrounds .slide-background-content {
   display: none !important;
 }
