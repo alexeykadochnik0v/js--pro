@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "reveal-md",
-    "build": "reveal-md lessons/index.md --static dist --assets-dir dist/_assets",
+    "build": "reveal-md lessons/index.md --static dist --assets-dir dist/_assets --static-dirs .reveal-md,lessons",
     "fix:metadata": "node fix-metadata.js",
     "fix:separators": "node add-separators.js",
     "fix:quotes": "node fix-quotes.js",
