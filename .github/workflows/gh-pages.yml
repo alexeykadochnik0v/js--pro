@@ -37,21 +37,32 @@ jobs:
 
       - name: Build
         run: |
-          # Переименовываем index-html.md в index.md перед сборкой
-          cp lessons/index-html.md lessons/index.md.bak
-          cp lessons/index.md lessons/index.md.local
-          cp lessons/index-html.md lessons/index.md
+          set -euo pipefail
 
-          # Собираем статический сайт
-          npx reveal-md lessons/ --static dist --static-dirs=plugins
+          # 1) Собираем главную страницу (индекс) из lessons/index.md
+          npx reveal-md lessons/index.md \
+            --static dist \
+            --static-dirs ".reveal-md,lessons,plugins"
 
-          # Восстанавливаем оригинальный index.md для локальной разработки
-          mv lessons/index.md.local lessons/index.md
-
-          # Копируем дополнительные файлы
-          rsync -a -r lessons/ dist/
-          cp -r plugins dist/_assets/
-          cp -r .reveal-md dist/_assets/
+          # 2) Собираем КАЖДЫЙ урок: lessons/**/lesson.md -> dist/<lessonXX>/lesson.html
+          # Генерируем в корневую папку по имени урока и переименовываем index.html -> lesson.html
+          shopt -s globstar nullglob
+          for f in lessons/**/lesson.md; do
+            lesson_dirname="$(dirname "$f")"           # lessons/lessonXX
+            lesson_name="$(basename "$lesson_dirname")" # lessonXX
+            outdir="dist/${lesson_name}"
+            mkdir -p "$outdir"
+            npx reveal-md "$f" \
+              --static "$outdir" \
+              --static-dirs ".reveal-md,lessons,plugins"
+            if [ -f "$outdir/index.html" ]; then
+              mv "$outdir/index.html" "$outdir/lesson.html"
+            fi
+            # Копируем папку images урока рядом с lesson.html, если она есть
+            if [ -d "${lesson_dirname}/images" ]; then
+              cp -r "${lesson_dirname}/images" "$outdir/"
+            fi
+          done
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
