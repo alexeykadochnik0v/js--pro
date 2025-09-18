@@ -4,6 +4,7 @@ description: "Управление состоянием приложения с 
 ---
 
 # Управление состоянием приложения, Redux и работа с actions
+
 <!-- v -->
 
 ## Цели занятия
@@ -241,7 +242,7 @@ function reducer(state: GameOfLifeState, action): GameOfLifeState {
 
 <!-- s -->
 
-[Практика](https://codesandbox.io/s/github/vvscode/otus--javascript-basic/tree/master/lessons/lesson34/code/reduxBasic)
+### [Практика](https://codesandbox.io/s/github/vvscode/otus--javascript-basic/tree/master/lessons/lesson34/code/reduxBasic)
 
 <!-- v -->
 
