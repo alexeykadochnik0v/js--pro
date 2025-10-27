@@ -1,263 +1,659 @@
 ---
-title: "Урок 17"
-description: "Основы Vue3: компоненты, реактивность"
+title: "Урок 17: Основы Vue3"
+description: "Компоненты, реактивность, синтаксис шаблонов"
 ---
 
-# Основы Vue3: компоненты, реактивность
+# Основы Vue3
 
-<!-- s -->
+## Компоненты, реактивность, синтаксис шаблонов
+
+<!-- v -->
+
+## Как меня слышно и видно?
+
+> Напишите в чат
+
+- **+** если все хорошо
+- **–** если есть проблемы со звуком или с видео
+
+<!-- v -->
 
 ## Цели занятия
 
-Изучить Vue-компоненты.
+- Понять философию Vue и отличия от React
+- Создавать Vue-компоненты с Composition API
+- Работать с базовой реактивностью (ref, reactive)
+- Применять синтаксис шаблонов и директивы Vue
+- Обрабатывать события и формы
 
-<!-- s -->
+<!-- v -->
 
 ## Краткое содержание
 
-- Компоненты Vue3
-- Реактивность
+- Введение в Vue: философия и экосистема
+- Настройка окружения через Vite
+- Single File Components (SFC)
+- Базовая реактивность: ref() и reactive()
+- Синтаксис шаблонов и директивы
+- Практические примеры
 
-<!-- s -->
+<!-- v -->
 
-## Результат
+## Результат занятия
 
-Vue 3-компоненты с базовой реактивностью и привязкой данных
+Vue-приложение с компонентами, использующими базовую реактивность, директивы и обработку событий
 
-<!-- s -->
+<!-- v -->
 
 ## Компетенции по занятию
 
-- Создавать компоненты, описывать атрибуты элементов
+**Создавать приложения на Vue 3**
 
----
-
-title: Занятие 17
-description: Базовая работа с сетью: методы HTTP, куки, заголовки, WS
-
----
-
-# OTUS
+- Применение Composition API
+- Работа с реактивностью
+- Использование директив и синтаксиса шаблонов
+- Обработка событий и форм
 
 <!-- s -->
 
-## Javascript Basic
+## Что такое Vue?
 
-<!--v-->
+**Vue** (произносится /vjuː/, как "view") — прогрессивный фреймворк для создания пользовательских интерфейсов
 
-<!-- v -->
+### Особенности:
 
-### Вопросы?
+- **Прогрессивный** — можно использовать минимально или максимально
+- **Template-based** — HTML-подобный синтаксис
+- **Реактивный** — автоматическое обновление UI
+- **Легковесный** — ~30% меньше React
 
-<!--s-->
+<!-- s -->
 
-<!-- v -->
+## Vue vs React: Философия
 
-### Базовая работа с сетью: методы HTTP, куки, заголовки, WS.
+**Вы уже знаете React, давайте сравним подходы:**
 
-<!-- v -->
-
-HTTP сообщения - это обмен данными между сервером и клиентом. Есть два типа сообщений: _запросы_, отправляемые клиентом, чтобы инициировать реакцию со стороны сервера, и _ответы_ от сервера.
-
-<!-- v -->
-
-HTTP-сообщение представляет собой обычный текст. Структура сообщения строго определена:
-
-1. Стартовая строка
-2. Метод запроса
-3. Заголовки, передают сервисную информацию
-4. Тело сообщения, представляет данные в текстовом виде
-
-<!-- v -->
-
-HTTPS (HTTP Secure) является **зашифрованной** версией HTTP протокола. Обычно он использует SSL или TLS для шифрования соединения между клиентом и сервером.
+| Аспект       | React                   | Vue                      |
+| ------------ | ----------------------- | ------------------------ |
+| Синтаксис    | JSX (JavaScript + HTML) | Templates (HTML + JS)    |
+| Реактивность | Implicit (useState)     | Explicit (ref, reactive) |
+| Стиль        | JavaScript everywhere   | Декларативные директивы  |
+| Компоненты   | Функции                 | SFC (.vue файлы)         |
+| Логика       | Hooks                   | Composition API (похоже) |
+| Экосистема   | Community-driven        | Official (Router, Pinia) |
 
 <!-- v -->
 
+### Пример: React vs Vue
+
+**React (вы знаете):**
+
+```jsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+    </div>
+  );
+}
+```
+
 <!-- v -->
 
-### Вопросы?
+**Vue (будем изучать):**
+
+```vue
+<script setup>
+import { ref } from "vue";
+const count = ref(0);
+</script>
+
+<template>
+  <div>
+    <p>Count: {{ count }}</p>
+    <button @click="count++">+1</button>
+  </div>
+</template>
+```
+
+<!-- s -->
+
+## Экосистема Vue
+
+**Официальные инструменты:**
+
+- **Vite** — сборщик проектов (быстрее Webpack)
+- **Vue Router** — клиентский роутинг
+- **Pinia** — управление состоянием (как Redux Toolkit)
+- **Vue DevTools** — отладка в браузере
+- **Vue Test Utils** — тестирование компонентов
+
+**Документация:** https://vuejs.org/
+
+<!-- s -->
+
+## Настройка окружения
+
+**Создание проекта через Vite:**
+
+```bash
+npm create vue@latest
+
+# Project name: my-vue-app
+# Add TypeScript? Yes
+# Add Vue Router? No (изучим позже)
+# Add Pinia? No (изучим позже)
+```
+
+**Запуск проекта:**
+
+```bash
+cd my-vue-app
+npm install
+npm run dev
+```
 
 <!-- v -->
 
-URL состоит из различных частей, некоторые из которых являются обязательными, а некоторые - опциональными.
+## Структура проекта
 
 ```
-http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
+my-vue-app/
+├── public/           # Статические файлы
+├── src/
+│   ├── assets/      # Изображения, стили
+│   ├── components/  # Компоненты
+│   ├── App.vue      # Корневой компонент
+│   └── main.ts      # Точка входа
+├── index.html       # HTML шаблон
+├── vite.config.ts   # Настройки Vite
+└── package.json
 ```
 
-1. `http://` - протокол
-2. `www.example.com` - доменное имя
-3. `:80` - порт
-4. `path/to/myfile.html` - адрес ресурса на веб-сервере
-5. `?key1=value1&key2=value2` - дополнительные параметры, которые браузер сообщает веб-серверу
-6. `#SomewhereInTheDocument` - якорь на другую часть того же самого ресурса
+<!-- v -->
+
+## Точка входа: main.ts
+
+```typescript
+import { createApp } from "vue";
+import App from "./App.vue";
+import "./assets/main.css";
+
+createApp(App).mount("#app");
+```
+
+**Сравнение с React:**
+
+```typescript
+import { createRoot } from "react-dom/client";
+createRoot(document.getElementById("root")).render(<App />);
+```
+
+<!-- s -->
+
+## Single File Components (SFC)
+
+**Однофайловые компоненты** — формат `.vue`
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+const greeting = ref("Hello Vue!");
+</script>
+
+<template>
+  <p class="greeting">{{ greeting }}</p>
+</template>
+
+<style scoped>
+.greeting {
+  color: red;
+  font-weight: bold;
+}
+</style>
+```
+
+<!-- s -->
+
+## ref() — реактивные переменные
+
+```javascript
+import { ref } from "vue";
+
+const count = ref(0);
+
+console.log(count.value); // 0
+count.value++; // изменение
+```
+
+**TypeScript:**
+
+```typescript
+const count = ref<number>(0);
+const user = ref<User | null>(null);
+```
 
 <!-- v -->
 
-- **GET** - Позволяет запросить некоторый конкретный ресурс
-- **POST** - Позволяет отправить данные на сервер
-- **PUT** - Используется для создания новых ресурсов на сервере
-- **DELETE** - Позволяет удалить существующие ресурсы на сервере
-- **PATCH** - Позволяет внести частичные изменения в указанный ресурс по указанному расположению
-- **HEAD** - Cлужит для проверки существования ресурса
-- **OPTIONS** - Cлужит для получения параметров для ресурса или для сервера в целом.
+## reactive() — для объектов
 
-<!-- v -->
+```javascript
+import { reactive } from "vue";
 
-- _1xx_ — обработка данных на сервере продолжается;
-- _2xx_ — успешная обработка данных;
-- _3xx_ — перенаправление запросов;
-- _4xx_ — ошибка по вине клиента;
-- _5xx_ — ошибка по вине сервера.
-
-<!-- v -->
-
-- _200 OK_ в случае успешной обработки запроса.
-- _301 Moved Permanently_ если редирект используется на постоянной основе.
-- _307 Temporary Redirect_ если редирект используется временно.
-- _400 Bad Request_ если в запросе есть синтаксическая ошибка.
-- _403 Forbidden_ если запрос успешный, но сервер его не может выполнить, поскольку пользователь не имеет достаточных прав.
-- _404 Not Found_ если запрошенного ресурса не существует.
-- _500 Internal Server Error_ если работа программы на сервере выдала ошибку.
-
-<!-- v -->
-
-1. Основные заголовки, которые могут включаться в любые сообщения клиента и сервера.
-2. Заголовки запроса, которые используются только в сообщениях клиента.
-3. Заголовки ответа, которые используются только в сообщениях сервера.
-4. Заголовки сущности, которые описывают данные в сообщении.
-
-<!-- v -->
-
-1. _Via_ содержит версию HTTP протокола
-1. _User-Agent_ содержит строку с типом браузера и ОС
-1. _Content-Length_ - указывает размер отправленного получателю тела объекта в байтах.
-1. _Сontent-Type_ - используется для того, чтобы определить тип ресурса.
-1. _Cookie_ - содержит куки
-
-<!-- v -->
-
-```js [1-30]
-const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-  method: "POST",
-  body: JSON.stringify({
-    title: "Заголовок поста",
-    body: "А роза упала на лапу азора",
-    userId: 1,
-  }),
-  headers: {
-    "Content-type": "application/json; charset=UTF-8",
-  },
+const user = reactive({
+  name: "John",
+  age: 25,
 });
 
-const data = await response.json();
-console.log(data);
+user.age = 26; // Прямой доступ, без .value
 ```
 
 <!-- v -->
 
-Куки – это небольшие текстовые данные, которые хранятся в браузере пользователя и используются веб-сайтами для запоминания информации о посетителе.
+## ref() vs reactive()
 
-<!-- v -->
+**✅ ref()** для:
 
-- _path_ — определяет путь, по которому будет доступна кука.
-- _domain_ — определяет домен, для которого указана кука.
-- _max-age_ и _expires_ — определяет время жизни куки.
-- _secure_ — указывает, что данная кука может быть передана только при запросах по защищённому протоколу HTTPS.
-- _samesite_ — определяет, может ли данная кука быть отправлена при кроссдоменном запросе.
+- Примитивов (number, string, boolean)
+- Когда нужно заменить весь объект
 
-<!-- v -->
+**✅ reactive()** для:
 
-```js [1-30]
-document.cookie = "showOnboarding=true;max-age=3600";
+- Объектов (форма, настройки)
+- Группировки данных
+
+```javascript
+const count = ref(0);
+const form = reactive({ email: "", password: "" });
 ```
-
-<!-- v -->
-
-<!-- v -->
-
-### Вопросы?
 
 <!-- s -->
 
-<!-- v -->
+## Директивы Vue
 
-### WebSocket
-
-<!-- v -->
-
-- Протокол для постоянного двунаправленного соединения между клиентом и сервером
-- Отличие от HTTP: постоянное соединение вместо запроса-ответа
-- Используется для чатов, игр, обновления данных в реальном времени
-
-<!-- v -->
-
-- Установка соединения через HTTP-апгрейд (Handshake)
-- После успешного рукопожатия открывается двунаправленный канал
-- Обмен сообщениями в формате текста или бинарных данных
-- Закрытие соединения
+- `v-bind` (`:`) — связывание атрибутов
+- `v-on` (`@`) — обработка событий
+- `v-if` / `v-else` — условный рендеринг
+- `v-for` — списки
+- `v-model` — двустороннее связывание
+- `v-show` — показать/скрыть
 
 <!-- v -->
 
-```js [1-30]
-const socket = new WebSocket("wss://echo.websocket.org");
+## v-bind и v-on
 
-socket.onopen = () => {
-  console.log("Соединение открыто");
-  socket.send("Привет, WebSocket!");
-};
+```vue
+<template>
+  <!-- v-bind сокращенно : -->
+  <button :id="buttonId" :disabled="isDisabled">Submit</button>
 
-// socket.send(...)
-
-socket.onmessage = (event) => {
-  console.log("Получено сообщение:", event.data);
-};
-
-socket.onclose = () => {
-  console.log("Соединение закрыто");
-};
-
-socket.onerror = (error) => {
-  console.error("Ошибка WebSocket:", error);
-};
+  <!-- v-on сокращенно @ -->
+  <button @click="handleClick">Click</button>
+</template>
 ```
 
 <!-- v -->
 
-- Чаты и мессенджеры
-- Онлайн-игры
-- Финансовые торги и обновление котировок
-- Мониторинг и телеметрия в реальном времени
+## Модификаторы событий
+
+```vue
+<template>
+  <!-- Предотвратить действие по умолчанию -->
+  <form @submit.prevent="handleSubmit"></form>
+
+  <!-- Остановить всплытие -->
+  <div @click.stop="handleClick"></div>
+</template>
+```
 
 <!-- v -->
 
+## v-if / v-else
+
+```vue
+<template>
+  <div v-if="loading">Loading...</div>
+  <div v-else-if="isLoggedIn">Welcome!</div>
+  <div v-else>Please log in</div>
+</template>
+```
+
 <!-- v -->
 
-### Вопросы?
+## v-for с :key
+
+```vue
+<script setup>
+const todos = ref([
+  { id: 1, text: "Learn Vue" },
+  { id: 2, text: "Build app" },
+]);
+</script>
+
+<template>
+  <li v-for="todo in todos" :key="todo.id">{{ todo.text }}</li>
+</template>
+```
+
+<!-- v -->
+
+## v-model
+
+```vue
+<script setup>
+const email = ref("");
+const remember = ref(false);
+</script>
+
+<template>
+  <input v-model="email" type="email" />
+  <input v-model="remember" type="checkbox" />
+</template>
+```
 
 <!-- s -->
 
-#### Дополнительные материалы
+## Практические примеры
 
 <!-- v -->
 
-1. [Модель OSI](https://habr.com/ru/articles/876628/)
-2. [Путеводитель по HTTP](https://developer.mozilla.org/ru/docs/Web/HTTP)
-3. [HTTP заголовки](https://developer.mozilla.org/ru/docs/Web/HTTP/Reference/Headers)
-4. [HTTP методы](https://developer.mozilla.org/ru/docs/Web/HTTP/Reference/Methods)
-5. [Cookies](https://developer.mozilla.org/ru/docs/Web/HTTP/Guides/Cookies)
+## Пример 1: Счетчик (JavaScript)
+
+```vue
+<script setup>
+import { ref } from "vue";
+
+const count = ref(0);
+
+const increment = () => count.value++;
+const decrement = () => count.value--;
+const reset = () => (count.value = 0);
+</script>
+
+<template>
+  <div class="counter">
+    <h2>Counter: {{ count }}</h2>
+    <div class="buttons">
+      <button @click="decrement">-</button>
+      <button @click="reset">Reset</button>
+      <button @click="increment">+</button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.counter {
+  text-align: center;
+  padding: 20px;
+}
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
+```
 
 <!-- v -->
 
-#### Вопросы для самопроверки
+## Пример 1: Счетчик (TypeScript)
 
-1. Что происходит на уровне протокола при выполнении HTTP-запроса от клиента к серверу?
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
 
-2. Какие параметры куки влияют на безопасность и область действия куки в браузере?
+const count = ref<number>(0);
 
-3. Как можно ограничить доступ к куки с помощью атрибута HttpOnly?
+const increment = (): void => {
+  count.value++;
+};
 
-4. Как работает механизм установки и передачи куки между клиентом и сервером?
+const decrement = (): void => {
+  count.value--;
+};
 
-5. Чем WebSocket отличается от традиционных HTTP-запросов и в каких сценариях его использование наиболее оправдано?
+const reset = (): void => {
+  count.value = 0;
+};
+</script>
+
+<template>
+  <div class="counter">
+    <h2>Counter: {{ count }}</h2>
+    <div class="buttons">
+      <button @click="decrement">-</button>
+      <button @click="reset">Reset</button>
+      <button @click="increment">+</button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.counter {
+  text-align: center;
+  padding: 20px;
+}
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
+```
+
+<!-- v -->
+
+## Пример 2: Todo List (JavaScript)
+
+```vue
+<script setup>
+import { ref } from "vue";
+
+const newTodo = ref("");
+const todos = ref([
+  { id: 1, text: "Learn Vue", done: false },
+  { id: 2, text: "Build app", done: false },
+]);
+
+const addTodo = () => {
+  if (newTodo.value.trim()) {
+    todos.value.push({
+      id: Date.now(),
+      text: newTodo.value,
+      done: false,
+    });
+    newTodo.value = "";
+  }
+};
+
+const removeTodo = (id) => {
+  todos.value = todos.value.filter((todo) => todo.id !== id);
+};
+
+const toggleTodo = (todo) => {
+  todo.done = !todo.done;
+};
+</script>
+
+<template>
+  <div class="todo-app">
+    <h2>Todo List</h2>
+
+    <form @submit.prevent="addTodo">
+      <input v-model="newTodo" placeholder="Add new todo" />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul v-if="todos.length">
+      <li v-for="todo in todos" :key="todo.id" :class="{ done: todo.done }">
+        <input type="checkbox" :checked="todo.done" @change="toggleTodo(todo)" />
+        <span>{{ todo.text }}</span>
+        <button @click="removeTodo(todo.id)">Delete</button>
+      </li>
+    </ul>
+
+    <p v-else>No todos yet!</p>
+  </div>
+</template>
+
+<style scoped>
+.todo-app {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+li.done span {
+  text-decoration: line-through;
+  color: #999;
+}
+</style>
+```
+
+<!-- v -->
+
+## Пример 2: Todo List (TypeScript)
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+
+interface Todo {
+  id: number;
+  text: string;
+  done: boolean;
+}
+
+const newTodo = ref<string>("");
+const todos = ref<Todo[]>([
+  { id: 1, text: "Learn Vue", done: false },
+  { id: 2, text: "Build app", done: false },
+]);
+
+const addTodo = (): void => {
+  if (newTodo.value.trim()) {
+    todos.value.push({
+      id: Date.now(),
+      text: newTodo.value,
+      done: false,
+    });
+    newTodo.value = "";
+  }
+};
+
+const removeTodo = (id: number): void => {
+  todos.value = todos.value.filter((todo) => todo.id !== id);
+};
+
+const toggleTodo = (todo: Todo): void => {
+  todo.done = !todo.done;
+};
+</script>
+
+<template>
+  <div class="todo-app">
+    <h2>Todo List</h2>
+
+    <form @submit.prevent="addTodo">
+      <input v-model="newTodo" placeholder="Add new todo" />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul v-if="todos.length">
+      <li v-for="todo in todos" :key="todo.id" :class="{ done: todo.done }">
+        <input type="checkbox" :checked="todo.done" @change="toggleTodo(todo)" />
+        <span>{{ todo.text }}</span>
+        <button @click="removeTodo(todo.id)">Delete</button>
+      </li>
+    </ul>
+
+    <p v-else>No todos yet!</p>
+  </div>
+</template>
+
+<style scoped>
+.todo-app {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+li.done span {
+  text-decoration: line-through;
+  color: #999;
+}
+</style>
+```
+
+<!-- s -->
+
+## Vue DevTools
+
+**Расширение браузера для отладки Vue-приложений**
+
+- Просмотр дерева компонентов
+- Инспектирование реактивных данных
+- Отслеживание событий
+- Анализ производительности
+
+**Установка:** https://devtools.vuejs.org/
+
+<!-- s -->
+
+
+## Q&A
+
+**Вопросы?**
