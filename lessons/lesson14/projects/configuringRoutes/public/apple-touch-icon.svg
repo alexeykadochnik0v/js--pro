@@ -1,0 +1,24 @@
+<svg width="180" height="180" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон -->
+  <rect width="32" height="32" rx="6" fill="#4F46E5"/>
+  
+  <!-- Корзина -->
+  <g fill="white" stroke="white" stroke-width="1.5">
+    <!-- Основа корзины -->
+    <path d="M6 10h20l-2 12H8l-2-12z" fill="#4F46E5" stroke="white"/>
+    
+    <!-- Ручки корзины -->
+    <path d="M10 14V8a4 4 0 0 1 8 0v6" fill="none"/>
+    <path d="M14 18v2" stroke-linecap="round"/>
+    <path d="M18 18v2" stroke-linecap="round"/>
+    
+    <!-- Товары в корзине -->
+    <circle cx="12" cy="14" r="1" fill="white"/>
+    <circle cx="16" cy="13" r="1" fill="white"/>
+    <circle cx="20" cy="14" r="1" fill="white"/>
+  </g>
+  
+  <!-- Индикатор товаров -->
+  <circle cx="24" cy="8" r="4" fill="#EF4444"/>
+  <text x="24" y="11" text-anchor="middle" fill="white" font-size="6" font-weight="bold">3</text>
+</svg>
