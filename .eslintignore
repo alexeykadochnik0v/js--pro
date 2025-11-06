@@ -1,1 +1,4 @@
 /node_modules
+lessons/lesson14/projects/singlePageShop/
+projects/*/node_modules/
+**/node_modules/

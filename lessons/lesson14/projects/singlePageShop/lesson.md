@@ -1000,10 +1000,6 @@ function NotFoundPage() {
 
 # Практическая часть
 
-```jsx
-npm run dev -- lessons/lesson14/projects/PRACTICE_MANUAL.md
-```
-
 ## Добавляем React Router в Shop App
 
 <!-- v -->
