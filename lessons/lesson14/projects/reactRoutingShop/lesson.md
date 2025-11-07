@@ -147,8 +147,7 @@ npm install react-router-dom@6
 
 ```jsx
 import { createBrowserRouter, RouterProvider } from "react-router";
-// В v7 для DOM-специфичных компонентов используем deep import
-import { RouterProvider } from "react-router/dom";
+import { RouterProvider } from "react-router";
 import { createRoot } from "react-dom/client";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
