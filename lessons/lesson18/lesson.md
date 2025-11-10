@@ -68,9 +68,7 @@ Vue-приложение с компонентами, использующими
 
 ```vue
 <template>
-  <button :disabled="!form.email || !form.password || loading">
-    Submit
-  </button>
+  <button :disabled="!form.email || !form.password || loading">Submit</button>
 </template>
 ```
 
@@ -125,10 +123,14 @@ const doubledMethod = () => {
 </script>
 
 <template>
-  <p>{{ doubled }}</p> <!-- Выполнится 1 раз -->
-  <p>{{ doubled }}</p> <!-- Из кеша -->
-  <p>{{ doubledMethod() }}</p> <!-- Выполнится -->
-  <p>{{ doubledMethod() }}</p> <!-- Выполнится снова -->
+  <p>{{ doubled }}</p>
+  <!-- Выполнится 1 раз -->
+  <p>{{ doubled }}</p>
+  <!-- Из кеша -->
+  <p>{{ doubledMethod() }}</p>
+  <!-- Выполнится -->
+  <p>{{ doubledMethod() }}</p>
+  <!-- Выполнится снова -->
 </template>
 ```
 
@@ -229,7 +231,9 @@ const firstName = ref("John");
 const lastName = ref("Doe");
 
 watch([firstName, lastName], ([newFirst, newLast], [oldFirst, oldLast]) => {
-  console.log(`Имя изменилось: ${oldFirst} ${oldLast} -> ${newFirst} ${newLast}`);
+  console.log(
+    `Имя изменилось: ${oldFirst} ${oldLast} -> ${newFirst} ${newLast}`
+  );
 });
 </script>
 ```
@@ -284,6 +288,7 @@ watchEffect(() => {
 ```
 
 **Разница:**
+
 - `watch` — явно указываем что отслеживать
 - `watchEffect` — автоматически отслеживает все используемые значения
 
@@ -576,7 +581,9 @@ const emit = defineEmits<{
 <template>
   <input
     :value="modelValue"
-    @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+    @input="
+      emit('update:modelValue', ($event.target as HTMLInputElement).value)
+    "
   />
 </template>
 ```

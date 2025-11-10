@@ -501,7 +501,11 @@ const toggleTodo = (todo) => {
 
     <ul v-if="todos.length">
       <li v-for="todo in todos" :key="todo.id" :class="{ done: todo.done }">
-        <input type="checkbox" :checked="todo.done" @change="toggleTodo(todo)" />
+        <input
+          type="checkbox"
+          :checked="todo.done"
+          @change="toggleTodo(todo)"
+        />
         <span>{{ todo.text }}</span>
         <button @click="removeTodo(todo.id)">Delete</button>
       </li>
@@ -595,7 +599,11 @@ const toggleTodo = (todo: Todo): void => {
 
     <ul v-if="todos.length">
       <li v-for="todo in todos" :key="todo.id" :class="{ done: todo.done }">
-        <input type="checkbox" :checked="todo.done" @change="toggleTodo(todo)" />
+        <input
+          type="checkbox"
+          :checked="todo.done"
+          @change="toggleTodo(todo)"
+        />
         <span>{{ todo.text }}</span>
         <button @click="removeTodo(todo.id)">Delete</button>
       </li>
@@ -652,7 +660,6 @@ li.done span {
 **Установка:** https://devtools.vuejs.org/
 
 <!-- s -->
-
 
 ## Q&A
 
