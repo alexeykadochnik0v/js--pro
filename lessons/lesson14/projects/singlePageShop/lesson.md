@@ -585,24 +585,15 @@ import { createBrowserRouter } from "react-router";
 const router = createBrowserRouter([
   {
     path: "/",
-    lazy: async () => {
-      const { default: Component } = await import("./pages/HomePage");
-      return { Component };
-    },
+    lazy: () => import("./pages/HomePage"),
   },
   {
     path: "/about",
-    lazy: async () => {
-      const { default: Component } = await import("./pages/AboutPage");
-      return { Component };
-    },
+    lazy: () => import("./pages/AboutPage"),
   },
   {
     path: "/products/:id",
-    lazy: async () => {
-      const { default: Component } = await import("./pages/ProductDetail");
-      return { Component };
-    },
+    lazy: () => import("./pages/ProductDetail"),
   },
 ]);
 ```
@@ -614,7 +605,7 @@ const router = createBrowserRouter([
 - 📦 **Оптимальное разделение** без дополнительного кода
 - 🎯 **Лучший Developer Experience**
 
-<!-- s -->
+<!-- v -->
 
 ## Suspense в v7 - автоматическое управление
 
@@ -634,101 +625,43 @@ function App() {
 }
 ```
 
-<!-- v -->
+### Новый подход v7 - встроенные Loading UI:
 
-### **React Suspense V7 + Lazy Components**
+```jsx
+import { createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
+import LoadingSpinner from "./components/LoadingSpinner";
 
-Используйте Suspense для lazy loading компонентов:
+const router = createBrowserRouter([
+  {
+    path: "/",
+    lazy: () => import("./pages/HomePage"),
+    // Автоматический Suspense для lazy routes
+  },
+  {
+    path: "/products/:id",
+    lazy: () => import("./pages/ProductDetail"),
+    loader: ({ params }) => fetch(`/api/products/${params.id}`),
+    // Параллельная загрузка компонента И данных
+  },
+]);
 
-> ⚠️ **Важно в React Router v7**: RouterProvider не поддерживает свойство `fallbackElement`. Вместо этого loading состояния обрабатываются несколькими способами:
-
-### 1. **Глобальный Fallback**
-
-```tsx
-export default function App() {
+// Global loading UI (опционально)
+function App() {
   return (
-    <Provider store={store}>
-      <Suspense fallback={<LoadingFallback />}>
-        <RouterProvider router={router} />
-      </Suspense>
-    </Provider>
+    <RouterProvider
+      router={router}
+      fallbackElement={<LoadingSpinner />} // Общий fallback
+    />
   );
 }
 ```
 
-<!-- v -->
+**Автоматические возможности v7:**
 
-### 2. **useNavigation для состояния загрузки данных**
-
-Показывайте загрузку на уровне Layout:
-
-```tsx
-const Layout: React.FC = () => {
-  const navigation = useNavigation();
-
-  return (
-    <div className={styles.layout}>
-      <Header />
-      <main className={styles.main}>
-        {navigation.state === "loading" ? <LoadingFallback /> : <Outlet />}
-      </main>
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
-          <p>Создано с ❤️ на OTUS JavaScript Pro</p>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-export default Layout;
-```
-
-<!-- v -->
-
-### 3. **Кастомный Loading в компонентах**
-
-Для более детального контроля используйте состояние navigation в компонентах:
-
-```tsx
-export default function HomePage() {
-  const products = useLoaderData() as Product[];
-  const navigation = useNavigation();
-
-  // Показываем loader при переходах между страницами
-  if (navigation.state === "loading") {
-    return <LoadingFallback />;
-  }
-
-  return (
-    <div className={styles.pageContainer}>
-      <ProductCatalog products={products} />
-    </div>
-  );
-}
-```
-
-<!-- v -->
-
-**Рекомендуемый подход - комбинированный:**
-
-1. **Suspense в App.tsx** для lazy loading компонентов при загрузке приложения
-2. **useNavigation в Layout** для показа загрузки при переходах между страницами
-3. **Кастомные индикаторы** в отдельных компонентах при необходимости
-
-> 💡 **Преимущества этого подхода**:
->
-> - Пользователь всегда видит, что происходит загрузка
-> - Вы можете контролировать где и как показывать loading состояния
-> - Разные типы загрузки обрабатываются соответствующими механизмами
-> - Лучший UX за счет информативной обратной связи
-
-**Итоговый результат:**
-
-- ✅ **Lazy loading** - Suspense показывает LoadingFallback при загрузке chunk'ов
-- ✅ **Data loading** - useNavigation показывает загрузку во время работы loader'ов
-- ✅ **Fallback coverage** - Все состояния загрузки покрыты подходящими индикаторами
+- 🔄 **Встроенный Suspense** для lazy routes
+- ⏳ **Loading states** для данных и компонентов
+- 🎯 **Предзагрузка** при наведении на ссылки
 
 <!-- s -->
 
@@ -881,17 +814,11 @@ import { createBrowserRouter } from "react-router";
 const router = createBrowserRouter([
   {
     path: "/",
-    lazy: async () => {
-      const { default: Component } = await import("./pages/HomePage");
-      return { Component };
-    }, // Автоматический lazy import
+    lazy: () => import("./pages/HomePage"), // Автоматический lazy import
   },
   {
     path: "/products/:id",
-    lazy: async () => {
-      const { default: Component } = await import("./pages/ProductDetail");
-      return { Component };
-    },
+    lazy: () => import("./pages/ProductDetail"),
   },
 ]);
 ```
@@ -1071,10 +998,6 @@ function NotFoundPage() {
 <!-- s -->
 
 # Практическая часть
-
-```jsx
-npm run dev -- lessons/lesson14/projects/PRACTICE_MANUAL.md
-```
 
 ## Добавляем React Router в Shop App
 
