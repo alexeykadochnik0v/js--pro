@@ -84,6 +84,7 @@ const currentPage = ref("home");
 ```
 
 Проблемы:
+
 - URL не меняется
 - Нельзя поделиться ссылкой
 - Не работают кнопки браузера назад/вперед
@@ -409,7 +410,9 @@ const hasUnsavedChanges = ref(false);
 // Перед уходом со страницы
 onBeforeRouteLeave((to, from) => {
   if (hasUnsavedChanges.value) {
-    const answer = window.confirm("У вас есть несохраненные изменения. Покинуть страницу?");
+    const answer = window.confirm(
+      "У вас есть несохраненные изменения. Покинуть страницу?"
+    );
     if (!answer) return false;
   }
 });
@@ -469,6 +472,7 @@ onBeforeRouteUpdate(async (to, from) => {
 ```
 
 **mode:**
+
 - `out-in` — старый компонент уходит, потом новый появляется
 - `in-out` — новый компонент появляется, потом старый уходит
 
@@ -525,7 +529,8 @@ onBeforeRouteUpdate(async (to, from) => {
     </header>
 
     <main>
-      <slot></slot> <!-- default slot -->
+      <slot></slot>
+      <!-- default slot -->
     </main>
 
     <footer>
@@ -591,6 +596,7 @@ onBeforeRouteUpdate(async (to, from) => {
 **Nuxt** — фреймворк для создания Vue-приложений с SSR, SSG и другими возможностями
 
 **Основные возможности:**
+
 - Server-Side Rendering (SSR)
 - Static Site Generation (SSG)
 - File-based роутинг
