@@ -5,6 +5,7 @@ const envars = {
     KEY: 'value'
 }
 
+// Делаем билдер запуска node CLI
 console.log(
     chalk.dim(
         `$ ${Object.keys(envars)

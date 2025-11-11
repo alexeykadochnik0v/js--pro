@@ -1,2 +1,2 @@
 const awesome = (good, better, theBest) => { }
-awesome.length // 3
+console.log(awesome.length) // 3
