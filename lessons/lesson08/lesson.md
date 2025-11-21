@@ -414,6 +414,155 @@ import "./components/MyButton.js";
 
 <!-- s -->
 
+## Web Components — детали
+
+<!-- v -->
+
+### Shadow DOM для изоляции
+
+```js
+class MyComponent extends HTMLElement {
+  connectedCallback() {
+    const shadow = this.attachShadow({ mode: "open" });
+    shadow.innerHTML = `
+      <style>
+        /* Стили изолированы */
+        button { background: blue; }
+      </style>
+      <button><slot></slot></button>
+    `;
+  }
+}
+```
+
+**Slot** — проброс контента внутрь компонента
+
+<!-- v -->
+
+### Атрибуты и события
+
+```js
+class UserCard extends HTMLElement {
+  static get observedAttributes() {
+    return ["name"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.render();
+  }
+
+  handleClick() {
+    // Кастомное событие
+    this.dispatchEvent(new CustomEvent("userclick", { detail: this.name }));
+  }
+}
+```
+
+<!-- v -->
+
+### Сборка Web Component библиотеки с Vite
+
+```js
+// vite.config.js
+export default defineConfig({
+  build: {
+    lib: {
+      entry: "src/index.js",
+      name: "MyComponents",
+      formats: ["es", "umd"],
+    },
+  },
+});
+```
+
+Публикация в npm, использование в React/Vue/Angular
+
+<!-- s -->
+
+## PWA и Service Workers
+
+<!-- v -->
+
+### Что такое PWA?
+
+**Progressive Web App** — веб-приложение, работающее как нативное
+
+**Возможности:**
+
+- Установка на домашний экран
+- Работа offline
+- Push-уведомления
+- Быстрая загрузка
+
+**Требования:** HTTPS + Service Worker + Web App Manifest
+
+<!-- v -->
+
+### Service Worker — жизненный цикл
+
+```js
+// sw.js
+self.addEventListener("install", (event) => {
+  // Кэширование при установке
+  event.waitUntil(
+    caches.open("v1").then((cache) => cache.addAll(["/", "/style.css"]))
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  // Перехват запросов
+  event.respondWith(
+    caches
+      .match(event.request)
+      .then((response) => response || fetch(event.request))
+  );
+});
+```
+
+<!-- v -->
+
+### Manifest.json
+
+```json
+{
+  "name": "My App",
+  "short_name": "App",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
+```
+
+<!-- v -->
+
+### PWA с Vite: vite-plugin-pwa
+
+```js
+// vite.config.js
+import { VitePWA } from "vite-plugin-pwa";
+
+export default defineConfig({
+  plugins: [
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      },
+    }),
+  ],
+});
+```
+
+Плагин генерирует Service Worker и manifest автоматически
+
+<!-- s -->
+
 ## CI/CD для сборки
 
 - Node.js 20 LTS, npm 10
