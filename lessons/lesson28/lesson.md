@@ -98,13 +98,13 @@ cd best-project && npm run start:dev
 ### Пример bootstrap (main.ts):
 
 ```typescript
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);
-  console.log("Application is running on: http://localhost:3000");
+  console.log('Application is running on: http://localhost:3000');
 }
 bootstrap();
 ```
@@ -127,11 +127,11 @@ bootstrap();
 ### Проблема: ручное создание зависимостей
 
 ```typescript
-import { Controller, Get } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { LoggerService } from "./logger.service";
+import { Controller, Get } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { LoggerService } from './logger.service';
 
-@Controller("users")
+@Controller('users')
 export class UsersController {
   private usersService: UsersService;
   private logger: LoggerService;
@@ -158,10 +158,10 @@ export class UsersController {
 ### Решение: автоматическое внедрение зависимостей
 
 ```typescript
-import { Controller, Get } from "@nestjs/common";
-import { UsersService } from "./users.service";
+import { Controller, Get } from '@nestjs/common';
+import { UsersService } from './users.service';
 
-@Controller("users")
+@Controller('users')
 export class UsersController {
   // DI через конструктор — NestJS автоматически создаёт и внедряет сервис
   constructor(private readonly usersService: UsersService) {}
@@ -190,18 +190,15 @@ export class UsersController {
 ### Основные декораторы NestJS:
 
 **Для классов:**
-
 - `@Controller()` — помечает класс как контроллер
 - `@Injectable()` — помечает класс как провайдер (сервис)
 - `@Module()` — определяет модуль
 
 **Для методов контроллера:**
-
 - `@Get()`, `@Post()`, `@Put()`, `@Delete()` — HTTP методы
 - `@Param()`, `@Body()`, `@Query()` — извлечение данных из запроса
 
 **Для параметров:**
-
 - `@Req()` / `@Request()` — объект запроса
 - `@Res()` / `@Response()` — объект ответа
 
@@ -270,7 +267,7 @@ Client (HTTP Request)
 ### Пример контроллера библиотеки:
 
 ```typescript
-import { Controller, Get, Post, Body, Param } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 
 interface Book {
   id: number;
@@ -278,11 +275,11 @@ interface Book {
   author: string;
 }
 
-@Controller("library")
+@Controller('library')
 export class LibraryController {
   private books: Book[] = [
-    { id: 1, title: "TypeScript Handbook", author: "Microsoft" },
-    { id: 2, title: "Node.js Design Patterns", author: "Mario Casciaro" },
+    { id: 1, title: 'TypeScript Handbook', author: 'Microsoft' },
+    { id: 2, title: 'Node.js Design Patterns', author: 'Mario Casciaro' },
   ];
 
   @Get()
@@ -290,9 +287,9 @@ export class LibraryController {
     return this.books;
   }
 
-  @Get(":id")
-  getBookById(@Param("id") id: string): Book {
-    return this.books.find((book) => book.id === parseInt(id));
+  @Get(':id')
+  getBookById(@Param('id') id: string): Book {
+    return this.books.find(book => book.id === parseInt(id));
   }
 
   @Post()
@@ -307,15 +304,15 @@ export class LibraryController {
 
 ### Декораторы для работы с запросом:
 
-| Декоратор                | Соответствие                        |
-| ------------------------ | ----------------------------------- |
-| `@Request()` / `@Req()`  | `req`                               |
-| `@Response()` / `@Res()` | `res`                               |
-| `@Next()`                | `next`                              |
-| `@Param(key?)`           | `req.params` / `req.params[key]`    |
-| `@Body(key?)`            | `req.body` / `req.body[key]`        |
-| `@Query(key?)`           | `req.query` / `req.query[key]`      |
-| `@Headers(name?)`        | `req.headers` / `req.headers[name]` |
+| Декоратор | Соответствие |
+|-----------|--------------|
+| `@Request()` / `@Req()` | `req` |
+| `@Response()` / `@Res()` | `res` |
+| `@Next()` | `next` |
+| `@Param(key?)` | `req.params` / `req.params[key]` |
+| `@Body(key?)` | `req.body` / `req.body[key]` |
+| `@Query(key?)` | `req.query` / `req.query[key]` |
+| `@Headers(name?)` | `req.headers` / `req.headers[name]` |
 
 <!-- s -->
 
@@ -345,7 +342,7 @@ export class LibraryController {
 ### Пример LibraryService:
 
 ```typescript
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 interface Book {
   id: number;
@@ -356,8 +353,8 @@ interface Book {
 @Injectable()
 export class LibraryService {
   private books: Book[] = [
-    { id: 1, title: "Clean Code", author: "Robert Martin" },
-    { id: 2, title: "Refactoring", author: "Martin Fowler" },
+    { id: 1, title: 'Clean Code', author: 'Robert Martin' },
+    { id: 2, title: 'Refactoring', author: 'Martin Fowler' },
   ];
 
   findAll(): Book[] {
@@ -365,7 +362,7 @@ export class LibraryService {
   }
 
   findOne(id: number): Book | undefined {
-    return this.books.find((book) => book.id === id);
+    return this.books.find(book => book.id === id);
   }
 
   create(book: Book): Book {
@@ -374,7 +371,7 @@ export class LibraryService {
   }
 
   remove(id: number): boolean {
-    const index = this.books.findIndex((book) => book.id === id);
+    const index = this.books.findIndex(book => book.id === id);
     if (index > -1) {
       this.books.splice(index, 1);
       return true;
@@ -389,8 +386,8 @@ export class LibraryService {
 ### Использование сервиса в контроллере:
 
 ```typescript
-import { Controller, Get, Post, Delete, Param, Body } from "@nestjs/common";
-import { LibraryService } from "./library.service";
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { LibraryService } from './library.service';
 
 interface Book {
   id: number;
@@ -398,7 +395,7 @@ interface Book {
   author: string;
 }
 
-@Controller("library")
+@Controller('library')
 export class LibraryController {
   // Внедрение сервиса через конструктор
   constructor(private readonly libraryService: LibraryService) {}
@@ -408,8 +405,8 @@ export class LibraryController {
     return this.libraryService.findAll();
   }
 
-  @Get(":id")
-  getBook(@Param("id") id: string) {
+  @Get(':id')
+  getBook(@Param('id') id: string) {
     return this.libraryService.findOne(parseInt(id));
   }
 
@@ -418,8 +415,8 @@ export class LibraryController {
     return this.libraryService.create(book);
   }
 
-  @Delete(":id")
-  deleteBook(@Param("id") id: string) {
+  @Delete(':id')
+  deleteBook(@Param('id') id: string) {
     return this.libraryService.remove(parseInt(id));
   }
 }
@@ -455,14 +452,14 @@ Feature Modules...
 ### Пример модуля:
 
 ```typescript
-import { Module } from "@nestjs/common";
-import { LibraryController } from "./library.controller";
-import { LibraryService } from "./library.service";
+import { Module } from '@nestjs/common';
+import { LibraryController } from './library.controller';
+import { LibraryService } from './library.service';
 
 @Module({
-  controllers: [LibraryController], // Контроллеры этого модуля
-  providers: [LibraryService], // Провайдеры (сервисы)
-  exports: [LibraryService], // Экспортируемые провайдеры для других модулей
+  controllers: [LibraryController],  // Контроллеры этого модуля
+  providers: [LibraryService],       // Провайдеры (сервисы)
+  exports: [LibraryService],         // Экспортируемые провайдеры для других модулей
 })
 export class LibraryModule {}
 ```
@@ -472,12 +469,15 @@ export class LibraryModule {}
 ### Корневой модуль приложения:
 
 ```typescript
-import { Module } from "@nestjs/common";
-import { LibraryModule } from "./library/library.module";
-import { UsersModule } from "./users/users.module";
+import { Module } from '@nestjs/common';
+import { LibraryModule } from './library/library.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [LibraryModule, UsersModule],
+  imports: [
+    LibraryModule,
+    UsersModule,
+  ],
 })
 export class AppModule {}
 ```
@@ -505,8 +505,8 @@ Client → Middleware → Route Handler → Response
 ### Пример Middleware для логирования:
 
 ```typescript
-import { Injectable, NestMiddleware } from "@nestjs/common";
-import { Request, Response, NextFunction } from "express";
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -522,16 +522,18 @@ export class LoggerMiddleware implements NestMiddleware {
 ### Подключение Middleware в модуле:
 
 ```typescript
-import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
-import { LibraryController } from "./library.controller";
-import { LoggerMiddleware } from "./logger.middleware";
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { LibraryController } from './library.controller';
+import { LoggerMiddleware } from './logger.middleware';
 
 @Module({
   controllers: [LibraryController],
 })
 export class LibraryModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes("library"); // Применить ко всем роутам /library
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('library'); // Применить ко всем роутам /library
   }
 }
 ```

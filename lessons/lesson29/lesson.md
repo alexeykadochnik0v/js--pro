@@ -114,18 +114,18 @@ npm install --save-dev ts-node
 ### Настройка в AppModule:
 
 ```typescript
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: "postgres",
-      host: "localhost",
+      type: 'postgres',
+      host: 'localhost',
       port: 5432,
-      username: "postgres",
-      password: "postgres",
-      database: "otus_fancy",
+      username: 'postgres',
+      password: 'postgres',
+      database: 'otus_fancy',
       autoLoadEntities: true, // Автоматическая загрузка сущностей
       synchronize: true, // ⚠️ Только для dev! В продакшене используйте миграции
     }),
@@ -141,9 +141,9 @@ export class AppModule {}
 Сущность — это класс, который маппится на таблицу в БД
 
 ```typescript
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity("users") // Имя таблицы
+@Entity('users') // Имя таблицы
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -151,10 +151,10 @@ export class User {
   @Column({ length: 100 })
   name: string;
 
-  @Column({ name: "date_of_birth", type: "date", nullable: true })
+  @Column({ name: 'date_of_birth', type: 'date', nullable: true })
   dateOfBirth: Date;
 
-  @Column({ type: "varchar", length: 200, unique: true })
+  @Column({ type: 'varchar', length: 200, unique: true })
   email: string;
 
   @Column({ default: true })
@@ -166,14 +166,14 @@ export class User {
 
 ### Основные декораторы TypeORM:
 
-| Декоратор                      | Назначение                            |
-| ------------------------------ | ------------------------------------- |
-| `@Entity()`                    | Помечает класс как сущность (таблицу) |
-| `@PrimaryGeneratedColumn()`    | Автоинкрементный первичный ключ       |
-| `@Column()`                    | Обычное поле таблицы                  |
-| `@CreateDateColumn()`          | Автоматическая дата создания          |
-| `@UpdateDateColumn()`          | Автоматическая дата обновления        |
-| `@ManyToOne()`, `@OneToMany()` | Связи между таблицами                 |
+| Декоратор | Назначение |
+|-----------|------------|
+| `@Entity()` | Помечает класс как сущность (таблицу) |
+| `@PrimaryGeneratedColumn()` | Автоинкрементный первичный ключ |
+| `@Column()` | Обычное поле таблицы |
+| `@CreateDateColumn()` | Автоматическая дата создания |
+| `@UpdateDateColumn()` | Автоматическая дата обновления |
+| `@ManyToOne()`, `@OneToMany()` | Связи между таблицами |
 
 <!-- s -->
 
@@ -184,11 +184,11 @@ export class User {
 ### Подключение репозитория в модуле:
 
 ```typescript
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "./user.entity";
-import { UsersService } from "./users.service";
-import { UsersController } from "./users.controller";
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user.entity';
+import { UsersService } from './users.service';
+import { UsersController } from './users.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])], // Регистрация сущности
@@ -203,16 +203,16 @@ export class UsersModule {}
 ### Использование репозитория в сервисе:
 
 ```typescript
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { User } from "./user.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
   ) {}
 
   // Получить всех пользователей
@@ -243,11 +243,11 @@ export class UsersService {
 ### Контроллер с CRUD-операциями:
 
 ```typescript
-import { Controller, Get, Post, Delete, Param, Body } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { User } from "./user.entity";
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { User } from './user.entity';
 
-@Controller("users")
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -256,8 +256,8 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string): Promise<User> {
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(parseInt(id));
   }
 
@@ -266,8 +266,8 @@ export class UsersController {
     return this.usersService.create(userData);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string): Promise<void> {
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
     return this.usersService.remove(parseInt(id));
   }
 }
@@ -297,18 +297,18 @@ export class UsersController {
 ### 1. Создать DataSource для CLI (src/config/typeorm.config.ts):
 
 ```typescript
-import { DataSource } from "typeorm";
+import { DataSource } from 'typeorm';
 
 export default new DataSource({
-  type: "postgres",
-  host: "localhost",
+  type: 'postgres',
+  host: 'localhost',
   port: 5432,
-  username: "postgres",
-  password: "postgres",
-  database: "otus_fancy",
-  entities: ["src/**/*.entity{.ts,.js}"],
-  migrations: ["src/migrations/*{.ts,.js}"],
-  migrationsTableName: "migrations",
+  username: 'postgres',
+  password: 'postgres',
+  database: 'otus_fancy',
+  entities: ['src/**/*.entity{.ts,.js}'],
+  migrations: ['src/migrations/*{.ts,.js}'],
+  migrationsTableName: 'migrations',
 });
 ```
 
@@ -358,10 +358,10 @@ npm run migration:revert
 ### Как выглядит миграция:
 
 ```typescript
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddFancyField1684359786471 implements MigrationInterface {
-  name = "AddFancyField1684359786471";
+  name = 'AddFancyField1684359786471';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Применение изменений
@@ -372,7 +372,9 @@ export class AddFancyField1684359786471 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Откат изменений
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "fancy_field"`);
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN "fancy_field"`
+    );
   }
 }
 ```
@@ -385,15 +387,15 @@ export class AddFancyField1684359786471 implements MigrationInterface {
 // Поиск
 await repo.find(); // Все записи
 await repo.findOne({ where: { id: 1 } }); // Одна запись
-await repo.findOneBy({ email: "test@example.com" }); // По условию
+await repo.findOneBy({ email: 'test@example.com' }); // По условию
 await repo.count(); // Количество
 
 // Создание и сохранение
-const user = repo.create({ name: "John" }); // Создать объект
+const user = repo.create({ name: 'John' }); // Создать объект
 await repo.save(user); // Сохранить в БД
 
 // Обновление
-await repo.update({ id: 1 }, { name: "Jane" });
+await repo.update({ id: 1 }, { name: 'Jane' });
 
 // Удаление
 await repo.delete({ id: 1 });
@@ -421,7 +423,6 @@ await repo.remove(user);
 ## Тезисы
 
 Сегодня:
-
 - Познакомились с концепцией ORM и её преимуществами
 - Рассмотрели TypeORM при работе с данными
 - Узнали, как обновлять структуру БД миграциями
