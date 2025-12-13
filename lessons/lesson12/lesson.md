@@ -42,75 +42,227 @@ React-компоненты и хуки, типизированные с помо
 
 <!-- s -->
 
-# Зачем TypeScript в React?
+## Зачем TypeScript в React?
 
 <!-- v -->
 
-`TypeScript` - это инструмент, который меняет процесс разработки на этапе написания кода, а не в браузере.
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+TypeScript это:
+</div>
 
-- Раннее обнаружение ошибок: TypeScript - это как статический анализатор в режиме реального времени. Он проверяет типы не во время выполнения программы (runtime), а во время написания (compile time). Пример классической ошибки: вы передаете в компонент проп `isLoading={true}`, а внутри компонента проверяете `if (props.isloading)`. В JavaScript эта ошибка проявится только при тестировании. TypeScript подчеркнет `isloading` красным, так как в интерфейсе пропсов определено `isLoading`.
-
-- Самодокументируемость кода: Глядя на интерфейс пропсов компонента, вы сразу понимаете его API: какие данные он ожидает, обязательные они или нет, какого типа функции нужно передать. Это критически важно при работе в команде, при возвращении к старому коду или при использовании библиотек. Вместо того чтобы читать документацию или искать в коде, как используется компонент, вы смотрите на его тип.
-
-- Улучшенный Developer Experience (DX): IDE (VSCode, WebStorm) использует информацию о типах для предоставления интеллектуального автодополнения. Вы начинаете вводить `props`. — и видите все доступные пропсы с их типами. Вызываете функцию — видите типы ее аргументов. Это ускоряет разработку и снижает когнитивную нагрузку.
-
-- Повышение надежности: TypeScript не позволит вам случайно передать строку туда, где ожидается массив объектов. Он заставляет явно обрабатывать потенциальные `null` или `undefined`, если вы используете строгий режим `(strict: true)`. Это делает код более устойчивым к edge-кейсам.
+- Раннее обнаружение ошибок: TypeScript проверяет типы не во время выполнения программы (runtime), а во время написания (compile time).
+- Самодокументируемость кода: Глядя на интерфейс пропсов компонента, вы сразу понимаете его API
+- Улучшенный Developer Experience (DX)
+- Повышение надежности: TypeScript не позволит вам случайно передать строку туда, где ожидается массив объектов
 
 <!-- v -->
 
-## Базовые требования
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Базовые требования
+</div>
 
 Для работы TS с React нужно немного больше, чем просто установить TypeScript.
 
-- `@types/react`, `@types/react-dom`: Это пакеты с *декларациями типов*. Сам React написан на JavaScript, но эти пакеты описывают его API (хуки, компоненты, события) на языке TypeScript. Без них TypeScript не будет знать, что такое `useState`.
+- **`@types/react`, `@types/react-dom`**: пакеты с *декларациями типов*. Без них TypeScript не будет знать, что такое `useState`.
 
-- `tsconfig.json`: Файл конфигурации TypeScript.
+- **`tsconfig.json`**: Файл конфигурации TypeScript.
 
-    - `"jsx": "react-jsx"` (для React 17+) или `"react"` (для старых версий): Директива для компилятора, говорящая "обрабатывай JSX-синтаксис, преобразуя его в вызовы `React.createElement` или новый jsx-рантайм".
+    - **`"jsx": "react-jsx"`**: Директива для компилятора, говорящая "обрабатывай JSX-синтаксис, преобразуя его в новый jsx-рантайм"
 
-    - `"strict": true` - Важнейшая настройка. Включает весь набор строгих проверок. Без этого TypeScript слишком снисходителен (например, позволяет неявные `any`). Настоящая мощь и безопасность TypeScript раскрываются именно в строгом режиме.
+    - **`"strict": true`** -  Включает весь набор строгих проверок
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Улучшения работы IntelliSense в TypeScript
+</div>
+
+<div style="text-align: left; font-size: 30px">
+     <b>Настройка Visual Studio Code для TypeScript</b>
+</div>
+
+<ol style="display: block; font-size: 24px">
+    <li>Откройте VS Code</li>
+    <li>Нажмите Ctrl + Shift + P (или Cmd + Shift + P на macOS), чтобы открыть командную палитру</li>
+    <li>Ввкдите Preferences: Open Default Settings (JSON)</li>
+</ol>
+
+``` ts
+{
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "editor.suggestOnTriggerCharacters": true,
+  "typescript.suggest.autoImports": true,
+  "typescript.format.enable": true
+}
+```
+
+ <div style="text-align: left; font-size: 30px">
+    <b>Использование Деклараций типов (Type Definitions)</b>
+</div>
+
+<div style="text-align: left; font-size: 24px">
+установить нужные декларации типов для используемых библиотек
+</div>
+
+```ts
+npm install --save-dev @types/react
+```
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Улучшения работы IntelliSense в TypeScript
+</div>
+
+ <div style="text-align: left;">
+     <b>Использование TypeScript конфигурации (tsconfig.json)</b>
+</div>
+
+```ts
+{
+  "compilerOptions": {
+    "target": "ES6", // Указывает стандарт JavaScript
+    "module": "ESNext", // Определяет модульную систему
+    "strict": true, // Включает строгую типизацию
+    "esModuleInterop": true, // Для поддержки CommonJS и ES-модулей
+    "resolveJsonModule": true, // Позволяет работать с .json файлами
+    "baseUrl": ".", // Базовый путь для относительных импортов
+    "paths": {
+      "*": ["node_modules/*", "src/*"]
+    },
+    "allowJs": true, // Разрешает использование JavaScript файлов
+    "skipLibCheck": true, // Пропуск проверки типов в библиотеках
+    "noEmit": true // Отключает вывод файлов, если не нужно собирать проект
+  },
+  "include": ["src/**/*.ts"], // Путь к исходным файлам
+  "exclude": ["node_modules", "dist", "build"] // Исключить ненужные файлы из обработки TypeScript для улучшуния производительности IntelliSense
+}
+```
 
 <!-- s -->
 
-# Типизация компонентов в React
+## Типизация компонентов в React
 
 <!-- v -->
 
-В TypeScript компонент — это либо функция, либо класс
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Типизация компонентов в React
+</div>
 
+<div style="text-align: left; margin: 50px 0 50px 0; ">
 Тип компонента всегда выводится автоматически:
-- если компонент — функция, то TS понимает, что это `(props: Props) => JSX.Element;`
-- если это класс, то TS знает, что это `Component<Props, State>;`
-- если это HOC, render-prop или что-то ещё — тип определяется через generic-и
+</div>
 
-React-компонент не имеет отдельного “своего” типа, кроме как функция с типизированными параметрами
+- **если компонент — функция**, то TS понимает, что это **`(props: Props) => JSX.Element;`**
+- **если это HOC, render-prop или что-то ещё** — тип определяется через **generic-и**
+
+<div style="text-align: left; margin-top: 50px; font-weight: bold;">
+  React-компонент не имеет отдельного “своего” типа, кроме как функция с типизированными параметрами
+</div>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Type inference
+</div>
 
-### Компонент как функция, возвращающая JSX
+<div style="text-align: left;">
+<b>Ключевой принцип современного TS в React</b>
+</div>
+
+<div style="text-align: left;">
+Современная экосистема React + TypeScript всё сильнее опирается на type inference, а не на ручное объявление типов
+</div>
+
+<br/>
+
+<div style="text-align: left;">
+<b>Почему inference — основа?</b>
+</div>
+
+<ul style="display: block">
+    <li>React — декларативный, а TS умеет выводить типы из деклараций</li>
+    <li>Современные API React используют generics, которые выводятся автоматически</li>
+    <li>Современный TS делает явные типы избыточными</li>
+    <li>Лучшая интеграция с серверными фреймворками (Next.js, Remix)</li>
+</ul>
+
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Компонент как функция, возвращающая JSX
+</div>
 
 ``` ts
     const Hello: () => JSX.Element = () => {
         return <div>Hello</div>;
     };
 ```
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Применение
-- Простые компоненты без пропсов
-- Когда нужен строгий контракт для возвращаемого значения
-- Обучающие или вспомогательные компоненты, где важно контролировать возвращаемое значение
+<ul style="display: block">
+    <li>Простые компоненты без пропсов</li>
+    <li>Когда нужен строгий контракт для возвращаемого значения</li>
+    <li>Обучающие или вспомогательные компоненты, где важно контролировать возвращаемое значение</li>
+</ul>
 
-#### Минусы
-- Нельзя возвращать null (или условный рендер), если понадобится
-- Часто лишняя строгая типизация — TS обычно сам выводит тип возвращаемого JSX
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block">
+    <li> Нельзя возвращать null (или условный рендер), если понадобится</li>
+    <li>Часто лишняя строгая типизация — TS обычно сам выводит тип возвращаемого JSX</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+React.ElementType
+</div>
 
-### Компонент с типизацией пропсов и сигнатуры
+<div style="text-align: left; font-size: 30px;">
+Это универсальный тип для любого компонента в React, который может быть передан в JSX
+</div>
+
+<div style="text-align: left; font-size: 25px;">
+Позволяет работать с компонентами, не уточняя их точный тип, что удобно при создании более абстрактных компонентов или при работе с типами в библиотеках, например, при написании HOC (Higher Order Components).
+</div>
+
+```ts
+type CustomButtonProps = {
+  component: React.ElementType;
+};
+
+const CustomButton: React.FC<CustomButtonProps> = ({ component: Component }) => {
+  return <Component>Click me</Component>;
+};
+
+const App = () => {
+  return (
+    <div>
+      {/* Используем CustomButton с обычной кнопкой */}
+      <CustomButton component="button" />
+
+      {/* Используем CustomButton с кастомным компонентом */}
+      <CustomButton component="a" />
+    </div>
+  );
+};
+```
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Компонент с типизацией пропсов и сигнатуры
+</div>
 
 ``` ts
     type Props = { name: string };
@@ -120,20 +272,30 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- типизация (props: Props) => JSX.Element задаёт сигнатуру всей функции, а не только пропсов
-- TS строго проверяет, что пропсы соответствуют Props и что возвращается JSX
-- Это даёт полное понимание контракта функции: что она принимает и что возвращает
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Иногда избыточно: TS сам может вывести тип функции по пропсам
-- Не всегда нужно указывать явно, если компонент простой
+<ul style="display: block">
+    <li>типизация (props: Props) => JSX.Element задаёт сигнатуру всей функции, а не только пропсов</li>
+    <li>TS строго проверяет, что пропсы соответствуют Props и что возвращается JSX</li>
+    <li>Это даёт полное понимание контракта функции: что она принимает и что возвращает</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block">
+    <li>Иногда избыточно: TS сам может вывести тип функции по пропсам</li>
+    <li>Не всегда нужно указывать явно, если компонент простой</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
-
-### Компонент с типом React.ComponentType
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Компонент с типом React.ComponentType
+</div>
 
 ``` ts
     type Props = { age: number };
@@ -143,43 +305,30 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- HOC, где компонент может быть любым типом
-- DI (dependency injection) — передача компонентов как пропсов
-- Универсальные UI-библиотеки
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Неявно добавляет children, даже если компонент их не принимает
-- Менее строгий, чем конкретная типизация пропсов и функции
+<ul style="display: block">
+    <li>HOC, где компонент может быть любым типом</li>
+    <li>DI (dependency injection) — передача компонентов как пропсов</li>
+    <li>Универсальные UI-библиотеки</li>
+</ul>
 
-<!-- v -->
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
 
-## Типизация компонентов в React (Примеры)
-
-### Компонент без children (React.VoidFunctionComponent / VFC)
-
-``` ts
-    type Props = { value: string };
-
-    const Tag: React.VoidFunctionComponent<Props> = ({ value }) => {
-        return <span>{value}</span>;
-    };
-```
-
-#### Применение
-- Кнопки, иконки, маленькие UI-элементы
-- Атомарные компоненты в дизайн-системах (цвет, тень, граница...)
-- Предотвращение случайного использования children
-
-#### Минусы
-- Редко используется в современном коде.
-- Иногда проще просто не использовать children и не указывать VFC.
+<ul style="display: block">
+    <li>Неявно добавляет children, даже если компонент их не принимает</li>
+    <li>Менее строгий, чем конкретная типизация пропсов и функции</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
-
-### Generic-компонент
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Generic-компонент
+</div>
 
 ``` ts
     interface ItemProps<T> {
@@ -191,20 +340,30 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Списки, таблицы, универсальные UI-компоненты
-- Контейнеры для данных с разными типами
-- Типизация динамических данных в формах и API
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Требует понимания generics
-- Без <T,> TS может ошибочно интерпретировать JSX как синтаксис generic
+<ul style="display: block">
+    <li>Списки, таблицы, универсальные UI-компоненты</li>
+    <li>Контейнеры для данных с разными типами</li>
+    <li>Типизация динамических данных в формах и API</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block">
+    <li>Требует понимания generics</li>
+    <li>Без &lt;T,&gt; TS может ошибочно интерпретировать JSX как синтаксис generic</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
-
-### memo-компонент
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+memo-компонент
+</div>
 
 ``` ts
     type Props = { title: string };
@@ -214,20 +373,30 @@ React-компонент не имеет отдельного “своего”
     });
 ```
 
-#### Применение
-- Компоненты, которые часто перерисовываются и могут быть мемоизированы
-- HOC или сложные композиции
-- Контроль типов при передаче memo-компонента как пропса
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Синтаксис громоздкий.
-- Часто можно обойтись без явного указания типа.
+<ul style="display: block">
+    <li>Компоненты, которые часто перерисовываются и могут быть мемоизированы</li>
+    <li>HOC или сложные композиции</li>
+    <li>Контроль типов при передаче memo-компонента как пропса</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block">
+    <li>Синтаксис громоздкий</li>
+    <li>Часто можно обойтись без явного указания типа</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
-
-### forwardRef-компонент
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+forwardRef-компонент
+</div>
 
 ``` ts
     type Props = { label: string };
@@ -238,53 +407,34 @@ React-компонент не имеет отдельного “своего”
     );
 ```
 
-#### Применение
-- Кастомные input, textarea, кнопки
-- Интеграция с формами, focus management
-- UI-киты, где родитель должен управлять DOM
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Синтаксис сложнее стрелочной функции без forwardRef
-- Часто громоздко для простых компонентов
+<ul style="display: block">
+    <li>Кастомные input, textarea, кнопки</li>
+    <li>Интеграция с формами, focus management</li>
+    <li>UI-киты, где родитель должен управлять DOM</li>
+</ul>
 
-<!-- v -->
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
 
-## Типизация компонентов в React (Примеры)
-
-### Классовый компонент
-
-``` ts
-    type Props = { count: number };
-    type State = { mult: number };
-
-    class Counter extends React.Component<Props, State> {
-        state: State = { mult: 2 };
-
-        render(): JSX.Element {
-            return <div>{this.props.count * this.state.mult}</div>;
-        }
-    }
-```
-
-#### Применение
-- Legacy-код с React <16.8
-- ErrorBoundaries (классический подход)
-- Сложные компоненты с внутренним состоянием, где Hooks не подходят
-
-#### Минусы
-- Классовые компоненты устарели для большинства задач
-- Громоздко и менее читаемо, чем функциональные компоненты с Hooks
-- Сложнее оптимизировать, чем функциональные
+<ul style="display: block">
+    <li>Синтаксис сложнее стрелочной функции без forwardRef</li>
+    <li>Часто громоздко для простых компонентов</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
-
-### Компонент, принимающий другой компонент
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Компонент, принимающий другой компонент
+</div>
 
 ``` ts
     type WrapperProps = {
-        Component: React.ComponentType<{ message: string }>;
+        Component: (props: { message: string }) => JSX.Element;
     };
 
     const Wrapper = ({ Component }: WrapperProps): JSX.Element => {
@@ -292,122 +442,118 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Абстрагировать логику от конкретной реализации UI `<Dialog as={MyStyledComponent} />`
-- Композиционные UI-компоненты `<Card Header={CardHeader} Body={CardBody} />`
-- Использование Dependency Injection - 
-    компонент сам решает, что рендерить, но реализация передаётся снаружи
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Труднее понять цепочку пропсов, особенно уровнями глубже
-- Нельзя подтвердить корректность ref для переданного компонента
-- Иногда сложно типизировать дополнительные generic-ограничения
-- Нельзя явно ограничить, что компонент должен быть только функциональным, ведь ComponentType допускает классовые компоненты
-- Может усложнить отладку: callback-компоненты теряют читаемость
+<ul style="display: block">
+    <li>Абстрагировать логику от конкретной реализации UI `&lt;Dialog as={MyStyledComponent}&#47;&gt;`</li>
+    <li>Композиционные UI-компоненты `&lt;Card Header={CardHeader} Body={CardBody} &#47;&gt;`</li>
+    <li>Использование DI - компонент сам решает, что рендерить, но реализация передаётся снаружи</li>
+</ul>
 
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
 
-<!-- v -->
-
-## Типизация компонентов в React (Примеры)
-
-### Компонент как render-prop
-
-``` ts
-    type Props = {
-        render: (count: number) => JSX.Element;
-    };
-
-    const Counter: (props: Props) => JSX.Element = ({ render }) => {
-        const count = 10;
-        return render(count);
-    };
-```
-
-#### Применение
-- Компонент — “контроллер”, а внешняя функция отвечает за UI
-- Нужно дать пользователю возможность полностью кастомизировать разметку
-- Нужно управлять сложным UI-потоком без контекста или хуков
-
-#### Минусы
-- Код может выглядеть многословно и “шумно”
-- Глубокая вложенность функций может затруднить чтение
-- Хуже автокомплит, чем у компонентного API
-- Render-props хуже оптимизируются (каждый ререндер создаёт новую функцию)
-- hooks сделали этот подход менее востребованным
+<ul style="display: block">
+    <li>Труднее понять цепочку пропсов, особенно уровнями глубже</li>
+    <li>Иногда сложно типизировать дополнительные generic-ограничения</li>
+</ul>
 
 <!-- v -->
 
-## Типизация компонентов в React (Примеры)
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+React.ElementRef&lt;typeof Component&gt;
+</div>
 
-### Компонент возвращает массив JSX
+<div style="text-align: left; font-size: 30px">
+Этот тип используется, чтобы лучить тип DOM-элемента или компонента, к которому можно прикрепить реф, если компонент является обернутым в forwardRef
+</div>
 
 ``` ts
-    const List: () => JSX.Element[] = () => {
-        return [<li key={1}>One</li>, <li key={2}>Two</li>];
-    };
+import React, { forwardRef, useRef } from 'react';
+
+const Button = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+    (props, ref) => {
+        return <button ref={ref} {...props} />;
+    }
+);
+
+const App = () => {
+  // Используем React.ElementRef для получения типа рефа для компонента Button
+  const buttonRef = useRef<React.ElementRef<typeof Button>>(null);
+
+  const handleClick = () => {
+    if (buttonRef.current) {
+      // Теперь можно работать с рефом как с HTMLButtonElement
+      buttonRef.current.click();
+    }
+  };
+
+  return (
+    <div>
+      <Button ref={buttonRef}>Click me</Button>
+      <button onClick={handleClick}>Programmatically click the above button</button>
+    </div>
+  );
+};
+
+export default App;
 ```
-
-#### Применение
-- Генераторы элементов списка
-- Виртуализация списков
-- Когда контейнер (ul/div) задаётся родителем
-- Перенос массива элементов в Portal
-
-#### Минусы
-- Всегда нужно вручную указывать `key`, иначе React ругается
-- Такой компонент нельзя легко обернуть чем-то ещё — он возвращает только массив
-- Если нужно добавить разметку — придётся переписывать
-- Теряется семантика: часто лучше использовать фрагмент `(<> </>)`
 
 <!-- s -->
 
-# Типизация пропсов в React-компонентах
+## Типизация пропсов в React-компонентах
 
 <!-- v -->
 
-## Способы типизацмм пропсов
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Способы типизации пропсов
+</div>
 
-### Инлайновая типизация через деструктуризацию параметра функции
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+
+</div>
 
 ```ts
+// Инлайновая типизация через деструктуризацию параметра функции
     const Button = ({ label, onClick }: { label: string; onClick: () => void }) => {
         return <button onClick={onClick}>{label}</button>;
     };
 
     // Использование
     <Button label="Нажми меня" onClick={() => alert('Клик!')} />
-```
 
-- Тип пропсов задаётся на месте, прямо в аргументе функции
-- Используется деструктуризация + инлайновый тип
-- Не нужен отдельный type или interface
+    // Тип пропсов задаётся на месте, прямо в аргументе функции
+    // Не нужен отдельный type или interface
 
-### Типизация через параметр функции (явная типизация пропсов)
-
-```ts
+// Типизация через параметр функции (явная типизация пропсов)
     function MyComponent(props: MyProps) { return <div>{props.title}</div>; }
-```
-- Тип пропсов задаётся для всего объекта аргумента функции (props)
-- Можно использовать заранее объявленный type или interface
-- Доступ к пропсам через props.propName
 
-### Типизация через деструктуризацию параметра функции с заранее объявленным типом
+    // Тип пропсов задаётся для всего объекта аргумента функции (props)
+    // Можно использовать заранее объявленный type или interface
+    // Доступ к пропсам через props.propName
 
-```ts
+// Типизация через деструктуризацию параметра функции с заранее объявленным типом
     function MyComponent({ title, count }: MyProps) { ... }
-```
 
-- Деструктурируем пропсы и одновременно указываем их тип
-- Используется заранее объявленный type или interface
-- Удобно, когда нужно сразу работать с отдельными переменными пропсов
+    // Деструктурируем пропсы и одновременно указываем их тип
+    // Используется заранее объявленный type или interface
+    // Удобно, когда нужно сразу работать с отдельными переменными пропсов
+```
 
 <!-- v -->
 
-## Создание типа для пропсов
+### Создание типа для пропсов
 
-### interface vs type:
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+interface vs type:
+</div>
 
-- `interface`: Концептуально — это "контракт" или "описание формы объекта". Его ключевая особенность — **декларативное слияние** (если объявить два интерфейса с одним именем, они объединятся) и **расширяемость** (`extends`). Идеально подходит для описания пропсов, state, API-ответов — сущностей, которые могут развиваться
+<div style="text-align: left; font-size: 27px;">
+<b>interface</b> —  <b>"контракт" или "описание формы объекта"</b>. Его ключевая особенность — <b>декларативное слияние</b> и <b>расширяемость</b> (`extends`). Идеально <b>подходит для описания пропсов, state, API-ответов — сущностей, которые могут развиваться</b>
+<div>
 
 ```ts
     interface BaseProps { id: string; }
@@ -416,53 +562,47 @@ React-компонент не имеет отдельного “своего”
         onClick: () => void;
     }
 ```
-
-- `type` **(Type Alias)**: Псевдоним для любого типа. Может описывать не только объект, но и примитив, объединение, кортеж. **Не может быть расширен через** `extends`, но может быть создан через пересечение (`&`)
+<div style="text-align: left; font-size: 27px;">
+<b>type (Type Alias)</b>: Псевдоним для любого типа. Может описывать не только объект, но и примитив, объединение, кортеж. <b>Не может быть расширен через `extends`</b>, но может быть создан через пересечение (<b>&</b>)
+<div>
 
 ```ts
     type Status = 'idle' | 'loading' | 'error'; // Объединение (union)
     type ClickHandler = (event: React.MouseEvent) => void; // Функциональный тип
+    type Person = [string, number, boolean]; // Кортеж (tuple)
     type ButtonProps = BaseProps & { // Пересечение (intersection)
         variant: 'primary' | 'secondary';
     };
 ```
 
-### **Рекомендация**: 
+<!-- v -->
 
-- `interface` используйте для пропсов, контекстов и классов — расширяемость и читаемость ошибок
-- `type` используйте для всего остального (unions, tuples, utility types)
+### Создание типа для пропсов
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+interface vs type:
+</div>
+
+<div style="text-align: left;">
+<b>Рекомендация:</b> 
+</div>
+
+<br/>
+<ul style="display: block">
+    <li><b>interface</b> используйте <b>для пропсов, контекстов и классов</b> — расширяемость и читаемость ошибок</li>
+    <br/>
+    <li><b>type</b> используйте <b>для всего остального (unions, tuples, utility types)</b></li>
+</ul>
 
 <!-- v -->
 
-## React.FC / React.FunctionComponent — **За и Против**
+### Продвинутые паттерны для типизации пропсов
 
-Это был стандартный способ типизации на заре TypeScript + React. Это дженерик-тип, который принимает тип пропсов
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Типизация children:
+</div>
 
-*Как это было:* const MyComponent: React.FC<MyProps> = ({ title }) => \<div>{title}</div>;
-
-Исторический "плюс": Ранее React.FC неявно включал children?: React.ReactNode в пропсы компонента. Это было удобно, но и опасно — компонент, который не должен принимать children, все равно их принимал по типам
-
-### Современные минусы:
-
-- Неявныx children больше нет (c React 18), поэтому этот "плюс" исчез
-
-- Проблемы с дженериками: `const List: React.FC<ListProps<T>> = ...` — синтаксически сложнее и может вызывать проблемы с выводом типов
-
-- TypeScript не умеет выводить типы значений по умолчанию из defaultProps в React.FC
-
-- Не является идиоматичным: Сообщество и авторы @types/react склоняются к более простому, прямолинейному подходу без обертки в FC
-
-### Вывод: 
-
-Откажитесь от React.FC. Используйте прямое аннотирование. Это делает сигнатуру компонента чище и понятнее
-
-<!-- v -->
-
-## Продвинутые паттерны для типизации пропсов
-
-### Типизация `children`:
-
-- `React.ReactNode` — это **"всё, что может быть отрендерено в React"**. Самый широкий и правильный тип для `children`. Включает: `string`, `number`, `boolean`, `null`, `undefined`, `JSX.Element`, `React.Fragment`, массив из всего перечисленного, `React.Portal`. **Используйте по умолчанию.** 
+- **React.ReactNode** — это **"всё, что может быть отрендерено в React"**. Самый широкий и правильный тип для children. Включает: **string**, **number**, **boolean**, **null**, **undefined**, **JSX.Element**, **React.Fragment**, массив из всего перечисленного, **React.Portal**. **Используйте по умолчанию.** 
 
 ```ts 
     type ChildrenProp = {
@@ -470,13 +610,13 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-- Более узкие типы: `string` (только текст), `JSX.Element` (только один React-элемент, не массив)
+- Более узкие типы: **string** (только текст), **JSX.Element** (только один React-элемент, не массив)
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Обычный объект с простыми типами
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Обычный объект с простыми типами
+</div>
 
 ``` ts
     type Props = {
@@ -489,20 +629,30 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Большинство компонентов UI
-- Простые компоненты-представления
-- Формы, карточки, списки
+<div style="margin-top: 30px; text-align: left; font-size: 32px; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Пропсы могут становиться слишком большими при росте компонента
-- Нет поддержки опциональности, если не добавить ?
+<ul style="display: block; font-size: 27px">
+    <li>Большинство компонентов UI</li>
+    <li>Простые компоненты-представления</li>
+    <li>Формы, карточки, списки</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-size: 32px; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block; font-size: 27px">
+    <li>Пропсы могут становиться слишком большими при росте компонента</li>
+    <li>Нет поддержки опциональности, если не добавить "?"</li>
+</ul>
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Опциональные пропсы
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Опциональные пропсы
+</div>
 
 ``` ts
     type Props = {
@@ -514,18 +664,28 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Компоненты, где пропсы не обязательны
-- Интерфейсы, в которых предусмотрены значения по умолчанию
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Если не задать default, нужно обрабатывать undefined вручную
+<ul style="display: block;">
+    <li>Компоненты, где пропсы не обязательны</li>
+    <li>Интерфейсы, в которых предусмотрены значения по умолчанию</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block;">
+    <li>Если не задать default, нужно обрабатывать undefined вручную</li>
+</ul>
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропсы с массивами и объектами
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Пропсы с массивами и объектами
+</div>
 
 ``` ts
     type Props = {
@@ -543,17 +703,30 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Списки, таблицы, сложный UI
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-Может быстро стать слишком громоздким → нужно выносить типы в отдельные интерфейсы
+<ul style="display: block;">
+    <li>Списки, таблицы, сложный UI</li>
+</ul>
+
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block;">
+    <li>Может быстро стать слишком громоздким → нужно выносить типы в отдельные интерфейсы</li>
+</ul>
+
+
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Union пропсы
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Union пропсы
+</div>
 
 ``` ts
     type Square = { type: "square"; size: number };
@@ -569,40 +742,28 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Компоненты, поведение которых зависит от режима
-- Формы, где поля отличаются по типу
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- При большом количестве вариантов код становится тяжёлым.
+<ul style="display: block;">
+    <li>Компоненты, поведение которых зависит от режима</li>
+    <li>Формы, где поля отличаются по типу</li>
+</ul>
 
-<!-- v -->
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропсы со значением "children"
-
-``` ts
-    type Props = {
-        children: React.ReactNode;
-    };
-
-    const Layout = ({ children }: Props) => {
-        return <main>{children}</main>;
-    };
-```
-
-#### Применение
-- Контейнеры и layout-компоненты
-
-#### Минусы
-- ReactNode слишком широкий тип → сложно контролировать контент
+<ul style="display: block;">
+    <li>При большом количестве вариантов код становится тяжёлым.</li>
+</ul>
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропсы-функции
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Пропсы-функции
+</div>
 
 ``` ts
     type Props = {
@@ -614,18 +775,28 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Обработчики событий
-- Render callbacks
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Иногда приходится указывать типы явно, если не получается inference
+<ul style="display: block;">
+    <li>Обработчики событий</li>
+    <li>Render callbacks</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
+
+<ul style="display: block;">
+    <li>Иногда приходится указывать типы явно, если не получается inference</li>
+</ul>
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропсы как generic (универсальные пропсы)
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Пропсы как generic (универсальные пропсы)
+</div>
 
 ``` ts
     type Props<T> = {
@@ -643,45 +814,29 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Формы, списки, универсальные элементы UI
-- Контролируемые компоненты
+<div style="margin-top: 30px; text-align: left; font-size: 32px; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Код становится сложнее
-- Не всегда очевидно, какой тип использовать в JSX
+<ul style="display: block; font-size: 27px;">
+    <li>Формы, списки, универсальные элементы UI</li>
+    <li>Контролируемые компоненты</li>
+</ul>
 
-<!-- v -->
+<div style="margin-top: 30px; text-align: left; font-size: 32px; font-weight: bold;">
+Минусы
+</div>
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропсы с "children как функция" (render props)
-
-``` ts
-    type Props = {
-        children: (open: boolean) => React.ReactNode;
-    };
-
-    const Toggle = ({ children }: Props) => {
-        const open = true;
-        return children(open);
-    };
-```
-
-#### Применение
-- Dropdown, tooltip, modal
-- Headless UI-компоненты
-- Логические компоненты без конкретной разметки
-
-#### Минусы
-- Немного сложнее понять на чтении
-- IDE хуже подсказывают структуру, чем при обычном JSX
+<ul style="display: block; font-size: 27px;">
+    <li>Код становится сложнее</li>
+    <li>Не всегда очевидно, какой тип использовать в JSX</li>
+</ul>
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Полиморфный компонент (as проп)
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Полиморфный компонент (as проп)
+</div>
 
 ``` ts
     type AsProp<C extends React.ElementType> = {
@@ -694,144 +849,30 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- Создание универсальных компонентов, которые могут быть чем угодно (блок, ссылка, кнопка)
-- Дизайн-системы, UI фреймворки
-- Хедлесс UI компоненты
+<div style="margin-top: 30px; text-align: left; font-size: 32px; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Сложная типизация, которую новичкам понять сложно
-- Высокая вероятность ошибиться
-- Усложняет структуру пропсов и IDE-подсказки
+<ul style="display: block; font-size: 27px;">
+    <li>Создание универсальных компонентов, которые могут быть чем угодно (блок, ссылка, кнопка)</li>
+    <li>Дизайн-системы, UI фреймворки</li>
+</ul>
 
-<!-- v -->
+<div style="margin-top: 30px; text-align: left; font-size: 32px; font-weight: bold;">
+Минусы
+</div>
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропсы для порталов
-
-``` ts
-    type PortalProps = {
-        container: HTMLElement;
-        children: React.ReactNode;
-    };
-
-    const Portal = ({ container, children }: PortalProps) => {
-        return ReactDOM.createPortal(children, container);
-    };
-```
-
-#### Применение
-- Модалки
-- Тултипы / поповеры
-- меню с "изоляцией"
-
-#### Минусы
-- Нужно аккуратно работать с жизненным циклом контейнера (он может исчезнуть раньше времени)
-- Иногда важно следить за стилями (z-index)
+<ul style="display: block; font-size: 27px;">
+    <li>Сложная типизация, которую новичкам понять сложно</li>
+    <li>Высокая вероятность ошибиться</li>
+    <li>Усложняет структуру пропсов и IDE-подсказки</li>
+</ul>
 
 <!-- v -->
 
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропы от контекста
-
-``` ts
-    type Theme = "light" | "dark";
-
-    type Props = {
-        theme: Theme;
-    };
-
-    const ThemedBox = ({ theme }: Props) => (
-        <div className={theme}>Hello</div>
-    );
-```
-
-Здесь проп theme может приходить извне или через контекст.
-
-``` ts
-    const ThemeContext = React.createContext<Theme>("light");
-```
-
-#### Применение
-- Темизация
-- Локализация
-- Пользовательские настройки
-
-#### Минусы
-- Невозможно контролировать "кто" передал некорректный проп, если контекст неправильный
-- Иногда темы становятся огромными объектами → сложнее типизировать
-
-<!-- v -->
-
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Ограниченные пропсы (tagged union)
-
-``` ts
-    type Props =
-      | { mode: "view"; itemId: number }
-      | { mode: "edit"; item: { id: number; text: string } };
-```
-
-#### Применение
-- Компоненты с разными режимами отображения
-- Формы edit/create/view
-- Табы, панели, сложные UI состояния
-
-#### Минусы
-- При десятках вариантов union становится огромным
-- Нужно внимательно писать логику проверки mode
-
-<!-- v -->
-
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Children как функция с generic
-
-``` ts
-    type Props<T> = {
-        items: T[];
-        children: (item: T) => React.ReactNode;
-    };
-```
-
-#### Применение
-- Headless UI
-- Динамические списки
-- Абстракция логики списка от рендера
-
-#### Минусы
-- Усложняет JSX
-- Разработчики путают children как функцию с обычным JSX
-
-<!-- v -->
-
-## Типизация пропсов в React-компонентах (Примеры)
-
-### Пропы с React.ComponentType
-
-``` ts
-    type Props = {
-        component: React.ComponentType<{ active: boolean }>;
-    };
-```
-
-#### Применение
-- HOC
-- С DI компонентами
-- Заменяемые компоненты (themeable systems)
-
-#### Минусы
-- Добавляет children по умолчанию
-- Иногда нужно использовать React.ElementType вместо ComponentType
-
-<!-- v -->
-
-## Типизация пропсов в React-компонентах (Примеры)
-
-### HTML-атрибуты + кастомные пропсы
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+HTML-атрибуты + кастомные пропсы
+</div>
 
 ``` ts
     type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -839,46 +880,407 @@ React-компонент не имеет отдельного “своего”
     };
 ```
 
-#### Применение
-- UI-компоненты: Inputs, Buttons, Cards
-- Дизайн-системы
-- Повторное использование DOM-атрибутов
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Применение
+</div>
 
-#### Минусы
-- Можно случайно перекрыть важные HTML пропсы
-- Типы HTML-атрибутов довольно тяжёлые (влияют на скорость анализа TS)
+<ul style="display: block;">
+    <li>UI-компоненты: Inputs, Buttons, Cards</li>
+    <li>Дизайн-системы</li>
+    <li>Повторное использование DOM-атрибутов</li>
+</ul>
 
-<!-- s -->
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Минусы
+</div>
 
-# Типизация хуков
+<ul style="display: block;">
+    <li>Можно случайно перекрыть важные HTML пропсы</li>
+    <li>Типы HTML-атрибутов довольно тяжёлые (влияют на скорость анализа TS)</li>
+</ul>
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+React.ComponentProps<'button'>
+</div>
 
-### useState
+<div style="text-align: left; font-size: 30px">
+Это утилита типа, которая извлекает пропсы для элемента &lt;button&gt;, как они используются в компоненте React
+</div>
 
-#### Базовая типизация
+<br/>
+<div style="text-align: left; font-size: 24px">
+Используя <b>React.ComponentProps<'button'></b>, получаем все стандартные свойства и обработчики событий для HTML-элемента кнопки, такие как: <b>onClick, disabled, type, атрибуты aria-* (например, aria-label), className, style, children (содержимое кнопки)</b>
+</div>
+
+``` ts
+// `ButtonProps` будет содержать все пропсы для стандартной кнопки <button>
+type ButtonProps = React.ComponentProps<'button'>;
+
+const MyButton: React.FC<ButtonProps> = (props) => {
+  return <button {...props} />;
+};
+
+// Теперь вы можете использовать MyButton с теми же пропсами, что и у обычной кнопки <button>
+const App = () => (
+  <div>
+    <MyButton onClick={() => alert('Нажата кнопка!')} disabled={false}>
+      Нажми меня
+    </MyButton>
+  </div>
+);
+export default App;
+```
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+React.ComponentPropsWithoutRef<'input'>
+</div>
+
+<div style="text-align: left; font-size: 30px">
+Это утилита типа, которая извлекает пропсы для элемента &lt;input&gt; (как в стандартном HTML), за исключением пропса ref
+</div>
+
+<br/>
+<div style="text-align: left; font-size: 24px">
+Это полезно, когда вы создаете компонент, который оборачивает стандартный элемент, например, &lt;input&gt;, и хотите контролировать поведение ref отдельно, например, используя forwardRef.
+</div>
+
+``` ts
+import React, { forwardRef } from 'react';
+
+// Тип пропсов для <input> без учета ref
+type InputProps = React.ComponentPropsWithoutRef<'input'>;
+
+const MyInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  return <input {...props} ref={ref} />;
+});
+
+const App = () => (
+  <div>
+    <MyInput type="text" placeholder="Введите что-то" />
+  </div>
+);
+
+export default App;
+```
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+as const
+</div>
+
+<div style="text-align: left; font-size: 32px">
+В TypeScript конструкция as const делает литералы максимально “узкими” и неизменяемыми, превращая выражение в read-only литеральный тип, а не расширяет его до более общего типа.
+</div>
+
+<br/>
+
+<div style="text-align: left; font-size: 32px">
+<b>Что делает as const?</b>
+</div>
+
+<div style="text-align: left; font-size: 27px">
+1. Фиксирует конкретные литеральные значения 
+</div>
+
+```ts
+let a = "hello" as const;
+// Тип: "hello"
+```
+<div style="text-align: left; font-size: 27px">
+2. Делает объект или массив неизменяемым (readonly)
+</div> 
+
+```ts
+const obj = { x: 10, y: 20 } as const;
+// Тип: { readonly x: 10; readonly y: 20 }
+```
+
+<div style="text-align: left; font-size: 27px">
+3.Особенно полезно для константных данных
+</div> 
+
+```ts
+const COLORS = ["red", "green", "blue"] as const;
+// Тип: readonly ["red", "green", "blue"]
+```
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Контроль union-типов в TypeScript
+</div>
+
+<div style=" text-align: left;">
+<b>Основные способы контроля (type narrowing)</b>
+</div>
+
+<div style=" text-align: left;">
+<b>a) typeof для примитивов</b>
+</div>
+
+``` ts
+    function process(val: string | number) {
+        if (typeof val === "string") {
+            console.log(val.toUpperCase()); // string
+        } else {
+            console.log(val.toFixed(2));    // number
+        }
+    }
+```
+
+<div style=" text-align: left;">
+Примечание: typeof работает только для примитивов: string, number, boolean, symbol, bigint, undefined.
+</div>
+
+<!-- v -->
+
+<div style=" text-align: left;">
+<b>b) instanceof для объектов</b>
+</div>
+
+``` ts
+    interface Cat {type: 'cat'; meow: () => void;}
+
+    interface Dog { type: 'dog'; bark: () => void;}
+       
+    type Animal = Cat | Dog;
+
+    function interactWithAnimal(animal: Animal) {
+        if (animal.type === 'cat') {
+            animal.meow();
+        } else if (animal.type === 'dog') {
+            animal.bark();
+        } else {
+            console.log('Unknown animal!');
+        }
+    }
+
+    const cat: Cat = { type: 'cat', meow: () => console.log('Meow!') };
+    const dog: Dog = { type: 'dog', bark: () => console.log('Woof!') };
+
+    interactWithAnimal(cat); // Meow!
+    interactWithAnimal(dog); // Woof!
+```
+
+<div style=" text-align: left;">
+instanceof проверяет конструктор объекта.
+</div>
+
+<!-- v -->
+
+<div style=" text-align: left;">
+<b>c) Пользовательские type guards (функции-проверки)</b>
+</div>
+
+``` ts
+   interface Square { kind: "square"; size: number }
+    interface Circle { kind: "circle"; radius: number }
+
+    type Shape = Square | Circle;
+
+    function area(shape: Shape) {
+        if (shape.kind === "square") {
+            return shape.size ** 2;
+        } else {
+            return Math.PI * shape.radius ** 2;
+        }
+    }
+```
+
+<div style=" text-align: left;">
+Этот способ очень мощный и чаще всего используется в TypeScript
+</div>
+
+<!-- v -->
+
+<div style=" text-align: left;">
+<b>d) Проверка по ключам (discriminated unions)</b>
+</div>
+
+``` ts
+    interface Square { kind: "square"; size: number }
+    interface Circle { kind: "circle"; radius: number }
+
+    type Shape = Square | Circle;
+
+    function area(shape: Shape) {
+        if (shape.kind === "square") {
+            return shape.size ** 2;
+        } else {
+            return Math.PI * shape.radius ** 2;
+        }
+    }
+```
+
+<div style=" text-align: left;">
+Этот способ очень мощный и чаще всего используется в TypeScript
+</div>
+
+<!-- s -->
+
+## Типизация конфигов и deps-массивов
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+satisfies
+</div>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+<b>satisfies</b> — идеальный способ типизировать конфиги и deps-массивы
+</div>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Оператор <b>satisfies</b> позволяет:
+</div>
+
+<ul style="display: block;">
+    <li>проверять объект на соответствие типу</li>
+    <li>не обрезать выводимый тип (в отличие от as)</li>
+    <li>сохранять узкие литеральные типы</li>
+</ul>
+
+<div style="margin-top: 30px; text-align: left; font-weight: bold;">
+Используется чаще всего в конфигурациях, где важно соответствие типу, но при этом хочется иметь точные литеральные значения
+</div>
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Типизация deps-массивов
+</div>
+
+<div style=" text-align: left;">
+Допустим, у нас есть массив зависимостей:
+</div>
+
+``` ts
+   const deps = ['auth', 'db', 'logger'] satisfies string[];
+```
+
+<div style=" text-align: left;">
+TypeScript проверит, что элементы — строки, но сам массив сохранит литеральные типы:
+</div>
+
+``` ts
+   // deps: readonly ["auth", "db", "logger"]
+```
+
+<div style=" text-align: left;">
+Типизация с конкретным набором допустимых значений
+</div>
+
+``` ts
+    type DepName = 'auth' | 'db' | 'logger';
+
+    const deps = ['auth', 'db'] satisfies DepName[];
+
+    // Если написать неверное значение — будет ошибка:
+
+    const deps = ['auth', 'wrong'] satisfies DepName[];// ❌ Type '"wrong"' is not assignable to type 'DepName'
+```
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+конфигурация с satisfies
+</div>
+
+``` ts
+    interface Config {
+        port: number;
+        mode: 'dev' | 'prod';
+        deps: string[];
+    }
+
+    const config = {
+        port: 3000,
+        mode: 'dev',
+        deps: ['db', 'cache']
+    } satisfies Config;
+```
+
+<div style=" text-align: left;">
+<b>Преимущество:</b>
+получаем автокомплит, проверку соответствия, но без кастинга.
+</div>
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Проверка соответствия набора handlers объекту
+</div>
+
+``` ts
+    type Handlers = {
+        start: () => void;
+        stop: () => void;
+    };
+
+    const handlers = {
+        start: () => console.log('start'),
+        stop: () => console.log('stop'),
+    } satisfies Handlers;
+```
+
+<div style=" text-align: left;">
+Если забыть ключ:
+</div>
+
+``` ts
+    const handlers = {
+        start: () => {}
+    } satisfies Handlers;
+    // ❌ Property 'stop' is missing
+```
+<!-- s -->
+
+## Типизация хуков
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useState
+</div>
+
+<div style="text-align: left; font-size: 32px">
+Базовая типизация
+</div>
+
 
 ``` ts
     const [count, setCount] = React.useState<number>(0);
 ```
 
-##### Частая ошибка
+<div style="text-align: left; font-size: 32px">
+Частая ошибка
+</div>
+
 
 ``` ts
     const [state, setState] = useState(null);
 ```
 
+<div style="text-align: left; font-size: 32px">
 TS выводит тип null, и позже нельзя изменить тип.
+</div>
 
-##### Исправление
+<div style="text-align: left; font-size: 32px">
+Исправление
+</div>
 
 ``` ts
     const [state, setState] = useState<string | null>(null);
 ```
 
-#### Типизация сложного объекта
+<div style="text-align: left; font-size: 32px">
+Типизация сложного объекта
+</div>
+
 
 ``` ts
     type User = { id: number; name: string };
@@ -887,25 +1289,28 @@ TS выводит тип null, и позже нельзя изменить ти�
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useReducer
+</div>
 
-### useReducer
+<div style="text-align: left; font-size: 32px">
+<b>useReducer</b> требует полной типизации state machine (конечного автомата)
 
-`useReducer` требует полной типизации state machine (конечного автомата)
+<b>Discriminated Union для `Action`</b>: Это паттерн, когда каждое действие (action) имеет поле `type` с литеральным типом (например, `'increment'`). TypeScript может затем сузить тип действия в редюсере, основываясь на этом поле, и обеспечить безопасный доступ к специфичным полям `payload`.
+</div>
 
-Discriminated Union для `Action`: Это паттерн, когда каждое действие (action) имеет поле `type` с литеральным типом (например, `'increment'`). TypeScript может затем сузить тип действия в редюсере, основываясь на этом поле, и обеспечить безопасный доступ к специфичным полям `payload`.
 
 ```ts
     type State = { count: number; user?: string };                  //! ограниченный набор состояний
 
     // Определяем действия как объединение (union) разных объектов
-    type Action =                                                   //! входные события (actions/events)
+    type Action =                                                                   //! входные события (actions/events)
     | { type: 'increment' } // Действие без доп. данных
     | { type: 'decrement' }
     | { type: 'set'; payload: number } // Действие с payload типа number
     | { type: 'login'; payload: { user: string } }; // Действие с payload-объектом
                                                    
-    function reducer(state: State, action: Action): State {         //! правила переходов
+    function reducer(state: State, action: Action): State {      //! правила переходов
         switch (action.type) {
             case 'increment':
                 return { ...state, count: state.count + 1 };
@@ -928,11 +1333,13 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useEffect / useLayoutEffect
+</div>
 
-### useEffect / useLayoutEffect
-
+<div style="text-align: left;">
 В React типизация уже встроена, и полноценная сигнатура выглядит так:
+</div>
 
 ```ts
     function useEffect(
@@ -941,12 +1348,25 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     ): void;
 ```
 
-##### Разберём:
+<div style="text-align: left;">
+Разберём:
+</div>
 
-- effect — функция, которая либо ничего не возвращает, либо возвращает cleanup функцию
-- deps — массив зависимостей, только для чтения (readonly), элементы — unknown
+<ul style="display: block;">
+    <li><b>effect</b> — функция, которая либо ничего не возвращает, либо возвращает cleanup функцию</li>
+    <li><b>deps</b> — массив зависимостей, только для чтения (readonly), элементы — unknown</li>
+</ul>
 
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useEffect / useLayoutEffect
+</div>
+
+<div style="text-align: left; font-size: 27px">
 Типизация здесь минимальна, но важна для чистоты кода
+</div>
+
 
 ```ts
     useEffect(() => {
@@ -957,7 +1377,10 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     }, []);
 ```
 
+<div style="text-align: left; font-size: 27px">
 Если необходимо ограничить зависимости, можно сделать так:
+</div>
+
 
 ```ts
     function useMyHook(value: string) {
@@ -967,35 +1390,36 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     }
 ```
 
-#### Нельзя возвращать async-функцию
+<div style="text-align: left; font-size: 27px">
+Нельзя возвращать async-функцию
+</div>
 
 ```ts
     useEffect(async () => { ... }, []); // ошибка
-```
-
-А так можно:
-    
-```ts
-    useEffect(() => {
-        (async () => {})();
-    }, []);
+      useEffect(() => {(async () => {})();}, []); // а так можно:
 ```
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useRef
+</div>
 
-### useRef
+<div style="text-align: left; font-size: 32px">
+<b>useRef</b> - <b>может хранить мутируемое значение</b>, доступное на протяжении всего жизненного цикла компонента, но <b>также может хранить ссылку на DOM-элемент</b>. Типизация отличается принципиально
+</div>
 
-`useRef` **может хранить мутируемое значение**, доступное на протяжении всего жизненного цикла компонента, но **также может хранить ссылку на DOM-элемент**. Типизация отличается принципиально
+<br/>
 
-#### useRef c DOM-элементом
+<div style="text-align: left; font-size: 32px">
+<b>useRef c DOM-элементом </b>
+</div>
 
-- Создаем реф: `const inputRef = useRef<HTMLInputElement>(null)`. Обязательно `null`! Это требование React для инициализации
-
-- Вешаем на элемент: `<input ref={inputRef} />`
-
-- Используем: `inputRef.current` имеет тип `HTMLInputElement | null`. **ПРОВЕРКА НА NULL ОБЯЗАТЕЛЬНА!** Потому что на момент первого рендера (при вызове `useRef`) элемент еще не создан, и свойство `current` будет `null`
+<ul style="display: block; font-size: 27px">
+    <li>Создаем реф: `const inputRef = useRef<HTMLInputElement>(null)`. Обязательно `null`! Это требование React для инициализации</li>
+    <li>Вешаем на элемент: &lt;input ref={inputRef} /&gt;</li>
+    <li>Используем: inputRef.current имеет тип HTMLInputElement | null. <b>ПРОВЕРКА НА NULL ОБЯЗАТЕЛЬНА!</b> Потому что на момент первого рендера (при вызове useRef) элемент еще не создан, и свойство current будет null</li>
+</ul>
 
 ```ts
     const handleClick = () => {
@@ -1004,7 +1428,15 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
         }
     };
 ```
-#### Мутируемое значение (instance variable):
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useRef
+</div>
+
+<div style="text-align: left; font-size: 32px">
+<b>Мутируемое значение(instance variable)</b>
+</div>
 
 ```ts
     const intervalId = useRef<number | undefined>(undefined); // Для setInterval
@@ -1017,30 +1449,36 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     }, []);
 ```
 
-Здесь `.current` можно менять без проверок. Важно: тип не включает `null` (если вы сами его не добавили)
+<div style="text-align: left; font-size: 32px">
+Здесь .current можно менять без проверок. Важно: тип не включает null (если вы сами его не добавили)
+</div>
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useMemo / useCallback
+</div>
 
-### useMemo / useCallback
-
-#### useMemo
+<div style="text-align: left;">
+<b>useMemo</b>
+</div>
 
 ```ts
     const sum = useMemo<number>(() => a + b, [a, b]);
 ```
 
-- Если указать generic — TS гарантирует тип результата
-- Если не указать → выводится автоматически из return
+<br/>
 
+<div style="text-align: left;">
+<b>useCallback</b>
+</div> 
 
-#### useCallback: 
-
-- Важно явно аннотировать параметры функции, так как они не могут быть выведены из пустой зависимости
+<div style="text-align: left; font-size: 27px">
+Важно явно аннотировать параметры функции, так как они не могут быть выведены из пустой зависимости
+</div> 
 
 ```ts
-    // Без аннотации event будет типа `any`
+    // Без аннотации event будет тип `any`
     const badHandler = useCallback((event) => { console.log(event.clientX); }, []);
 
     // С аннотацией - тип безопасен
@@ -1049,7 +1487,9 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     }, []);
 ```
 
-- Указываем generic, если TS не может вывести тип сам
+<div style="text-align: left; font-size: 27px">
+Указываем generic, если TS не может вывести тип сам
+</div> 
 
 ```ts
     const handleClick = useCallback<(id: number) => void>(
@@ -1060,13 +1500,17 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useContext
+</div>
 
-### useContext
+<div style="text-align: left; font-size: 27px">
+<b>Проблема</b>: Без TypeScript контекст может вернуть undefined по умолчанию, и вы об этом узнаете в рантайме
+</div> 
 
-**Проблема:** Без TypeScript контекст может вернуть undefined по умолчанию, и вы об этом узнаете в рантайме
-
-**Решение:** Создать строго типизированный контекст и кастомный хук-обертку
+<div style="text-align: left; font-size: 27px">
+<b>Решение</b>: Создать строго типизированный контекст и кастомный хук-обертку
+</div>
 
 ```ts
     // 1. Определяем тип значения контекста
@@ -1096,9 +1540,9 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
 
 <!-- v -->
 
-## Типизация хуков 
-
-### useSyncExternalStore
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+useSyncExternalStore
+</div>
 
 ```ts
     const state = useSyncExternalStore(
@@ -1108,14 +1552,19 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     );
 ```
 
-###### Тип выводится из getSnapshot:
+<div style="text-align: left;">
+Тип выводится из getSnapshot:
+</div>
+
 ```ts
     function getSnapshot(): User {
         return store.get();
     }
 ```
 
-###### Теперь:
+<div style="text-align: left;">
+Теперь:
+</div>
 
 ```ts
     const state: User
@@ -1123,13 +1572,19 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
 
 <!-- v -->
 
-## Типизация хуков 
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Кастомные хуки
+</div>
 
-### Кастомные хуки
-
+<div style="text-align: left;">
 Это просто функции, поэтому их типизация — это типизация аргументов и возвращаемого значения
+</div>
 
-#### Пример useLocalStorage:
+<br/>
+
+<div style="text-align: left;">
+    Пример useLocalStorage
+</div>
 
 ```ts
     // T - тип значения, которое мы храним. Начальное значение initialValue должно быть типа T.
@@ -1148,11 +1603,146 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
 
 <!-- s -->
 
-# Best Practices и частые ошибки
+## Типизация событий в React
 
-## Практики:
+<!-- v -->
 
-- Избегание `any`: `any` отключает проверку типов для значения. Используйте `unknown` если тип действительно неизвестен, а затем сужайте его с помощью проверок (typeof, instanceof, type guards)
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Типизация стандартных событий
+</div>
+
+<div style="text-align: left; font-size: 27px;">
+События типизируются с использованием типа <b>React.SyntheticEvent</b>, который является оберткой над стандартными DOM-событиями. 
+<p>Важно помнить, что в React используются специфичные типы для различных событий, такие как React.MouseEvent, React.KeyboardEvent, React.ChangeEvent и другие</p>
+</div>
+
+```ts
+//Пример для onClick
+const MyComponent: React.ElementType = () => {
+const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('Button clicked at', event.clientX, event.clientY);
+};
+
+return <button onClick={handleClick}>Click me</button>;
+};
+
+//Пример для onChange на input
+const MyComponent: React.ElementType = () => {
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Input changed:', event.target.value);
+};
+
+return <input type="text" onChange={handleChange} />;
+};
+```
+
+<!-- v -->
+
+<div style="margin: 0 0 20px 0; text-align: left; font-weight: bold; color: #4a89d2">
+Типизация других событий
+</div>
+
+<div style="text-align: left; font-size: 27px;">
+React поддерживает типизацию событий для всех стандартных DOM-событий. Вот несколько примеров для различных типов событий:
+</div>
+
+```ts
+//////////// onMouseEnter / onMouseLeave: //////////// 
+
+const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log('Mouse entered the div', event.clientX, event.clientY);
+};
+
+const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log('Mouse left the div');
+};
+
+return (
+    <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        Hover over me!
+    </div>
+);
+
+//////////// onKeyDown / onKeyUp: //////////// 
+
+const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log('Key pressed:', event.key);
+};
+
+return <input type="text" onKeyDown={handleKeyDown} />;
+
+//////////// onSubmit: //////////// 
+
+const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log('Form submitted');
+};
+
+return <form onSubmit={handleSubmit}><button type="submit">Submit</button></form>;
+```
+
+<!-- s -->
+
+## Типизация форм в React
+
+<!-- v -->
+
+<div style="text-align: left; font-size: 27px;">
+В React можно типизировать формы, применяя типы непосредственно к компонентам и их пропсам. Рассмотрим пример, как можно типизировать форму, используя TypeScript.
+</div>
+
+```ts
+import React, { useState } from 'react';
+
+// Типизация данных формы
+interface FormData {
+  name: string;
+  age: number;
+}
+
+// Типизация пропсов формы
+interface FormProps {
+  onSubmit: (data: FormData) => void;
+}
+
+
+const MyForm = ({ onSubmit }: FormProps) => {
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    age: 0,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: name === 'age' ? parseInt(value) : value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData); // Передаем данные формы
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      ...
+    </form>
+  );
+};
+```
+
+<!-- s -->
+
+### Best Practices и частые ошибки
+
+<br/>
+
+<div style="text-align: left;">
+   <b>Избегание any:</b> any отключает проверку типов для значения. <b>Используйте unknown</b> если тип действительно неизвестен, а затем сужайте его с помощью проверок (typeof, instanceof, type guards)
+</div>
+
 
 ```ts
     function safeParse(json: string): unknown { return JSON.parse(json); }
@@ -1162,18 +1752,35 @@ Discriminated Union для `Action`: Это паттерн, когда кажд�
     }
 ```
 
-- Экспорт типов пропсов: `export type { ButtonProps };`. Позволяет переиспользовать типы при композиции компонентов (например, в HOC или Storybook)
-
-## Ошибки:
-
-`useRef` без `null` для DOM: `const ref = useRef<HTMLDivElement>()` — это ошибка. Инициализатор обязателен. Без него `current` будет `undefined`, что несовместимо с ожидаемым React типом, и может привести к сбоям
-
-Не проверка `ref.current` на `null`: Самая частая причина ошибок "Cannot read properties of null". TypeScript заставляет вас это сделать, если вы указали правильный тип (`HTMLDivElement | null`)
+<div style="text-align: left;">
+   <b>Экспорт типов пропсов : export type { ButtonProps };</b>. Позволяет переиспользовать типы при композиции компонентов (например, в HOC или Storybook)
+</div>
 
 <!-- v -->
 
-## Полезные материалы
+### Best Practices и частые ошибки
 
-**DefinitelyTyped** — это популярный открытый (public) репозиторий с типовыми декларациями для библиотек JavaScript, которые сами по себе не содержат TypeScript-типов.
+<div style="text-align: left; font-size: 40px">
+   <b>Ошибки:</b>
+</div>
 
-**https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts**
+<br/>
+
+<div style="text-align: left;">
+   <b>useRef без null для DOM</b>: 
+   <b style="color: green">const ref = useRef&lt;HTMLDivElement&gt;()</b> — <b style="color: red">это ошибка</b>. Инициализатор обязателен. Без него `current` будет `undefined`, что несовместимо с ожидаемым React типом, и может привести к сбоям
+</div>
+
+<br>
+
+<div style="text-align: left;">
+<b>Не проверка `ref.current` на `null`</b>: Самая частая причина ошибок <b style="color: red">"Cannot read properties of null"</b>. TypeScript заставляет вас это сделать, если вы указали правильный тип (`HTMLDivElement | null`)
+</div>
+<!-- v -->
+
+### Полезные материалы
+
+<div style="text-align: left;">
+<a href='https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts'>DefinitelyTyped</a> — это популярный открытый (public) репозиторий с типовыми декларациями для библиотек JavaScript, которые сами по себе не содержат TypeScript-типов.
+</div>
+
