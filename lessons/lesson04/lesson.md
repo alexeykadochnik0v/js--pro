@@ -363,7 +363,7 @@ const colors = ["red", "green", "blue"] as const;
 // Тип: readonly ["red", "green", "blue"]
 
 const statuses = ["loading", "success", "error"] as const;
-type Status = typeof statuses[number]; // "loading" | "success" | "error"
+type Status = (typeof statuses)[number]; // "loading" | "success" | "error"
 ```
 
 <!-- s -->

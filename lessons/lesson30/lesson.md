@@ -65,13 +65,13 @@ description: "Continuous Integration, Continuous Delivery, Continuous Deployment
 
 ### Что относится к CI, CD и CD?
 
-| Этап | Относится к |
-|------|-------------|
-| Компиляция приложения | **Continuous Integration** |
-| Выгрузка кода на сервер | **Continuous Delivery** |
-| Установка зависимостей | **Continuous Delivery** |
-| Выполнение тестов | **Continuous Delivery** |
-| Публикация приложения | **Continuous Deployment** |
+| Этап                    | Относится к                |
+| ----------------------- | -------------------------- |
+| Компиляция приложения   | **Continuous Integration** |
+| Выгрузка кода на сервер | **Continuous Delivery**    |
+| Установка зависимостей  | **Continuous Delivery**    |
+| Выполнение тестов       | **Continuous Delivery**    |
+| Публикация приложения   | **Continuous Deployment**  |
 
 <!-- s -->
 
@@ -94,11 +94,13 @@ description: "Continuous Integration, Continuous Delivery, Continuous Deployment
 ### Преимущества Continuous Integration:
 
 **Требования:**
+
 - ✅ Написание автоматических тестов
 - ✅ Наличие сервера непрерывной интеграции
 - ✅ Частое слияние изменений
 
 **Что получаем:**
+
 - ✅ В рабочую среду попадает меньше багов
 - ✅ Проблемы интеграции решаются раньше
 - ✅ Реже переключение контекста у разработчиков
@@ -124,11 +126,13 @@ description: "Continuous Integration, Continuous Delivery, Continuous Deployment
 ### Преимущества Continuous Delivery:
 
 **Требования:**
+
 - ✅ Достаточное количество автотестов
 - ✅ Настройка сервера поставки
 - ✅ Понимание feature flags
 
 **Что получим:**
+
 - ✅ Простая поставка ПО
 - ✅ Чаще выпуск релизов и обратная связь от клиентов
 - ✅ Маленькие изменения вносятся быстрее
@@ -153,11 +157,13 @@ description: "Continuous Integration, Continuous Delivery, Continuous Deployment
 ### Преимущества Continuous Deployment:
 
 **Требования:**
+
 - ✅ Очень высокая культура тестирования
 - ✅ Документирование изменений вместе с выкатыванием
 - ✅ Базирование на feature flags
 
 **Что получим:**
+
 - ✅ Ускорение разработки
 - ✅ Снижение рисков за счет мелких поставок
 - ✅ Клиенты видят улучшения каждый день
@@ -206,7 +212,7 @@ on:
     branches: [main]
   workflow_dispatch: # ручной запуск
   schedule:
-    - cron: '0 0 * * 0' # каждое воскресенье в полночь
+    - cron: "0 0 * * 0" # каждое воскресенье в полночь
 ```
 
 <!-- s -->
@@ -394,6 +400,7 @@ jobs:
 ## Рефлексия
 
 Проверка достижения целей:
+
 - ✅ Понимаете ли вы концепции CI/CD?
 - ✅ Можете ли настроить GitHub Actions для деплоя?
 - ✅ Готовы ли опубликовать приложение на VPS?
@@ -405,6 +412,7 @@ jobs:
 ## Тезисы
 
 Сегодня:
+
 - Разобрались с концепциями CI, Continuous Delivery и Continuous Deployment
 - Изучили GitHub Actions: workflows, events, jobs, actions, runners
 - Настроили self-hosted runner на VPS
