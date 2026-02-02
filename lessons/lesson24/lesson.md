@@ -242,6 +242,8 @@ app.listen(PORT, () => {
 
 ## Полный цикл операций
 
+## Практика
+
 <!-- v -->
 
 ## Сервис: src/services/tasks.js
@@ -566,21 +568,6 @@ curl -X DELETE http://localhost:3000/api/tasks/1
 
 - REST Client — отправка запросов прямо из `.http` файлов
 
-**Пример файла requests.http:**
-
-```http
-### Получить все задачи
-GET http://localhost:3000/api/tasks
-
-### Создать задачу
-POST http://localhost:3000/api/tasks
-Content-Type: application/json
-
-{
-  "title": "Тестовая задача"
-}
-```
-
 <!-- s -->
 
 # Типичные ошибки
@@ -724,9 +711,7 @@ findAll() {
 
 <!-- v -->
 
-## Задание: расширить API
-
-**Добавьте в API:**
+## Разберем: как расширить API
 
 1. **Фильтрация по статусу:**
 
@@ -739,48 +724,6 @@ findAll() {
 
 3. **Проверка существования:**
    - `HEAD /api/tasks/:id` — вернуть 200 или 404 без тела
-
-**Время:** 10 минут
-
-<!-- v -->
-
-## Решение: фильтрация и поиск
-
-```javascript
-// controllers/tasks.js
-getAll(req, res) {
-  let tasks = tasksService.findAll();
-
-  // Фильтрация по completed
-  if (req.query.completed !== undefined) {
-    const completed = req.query.completed === "true";
-    tasks = tasks.filter((t) => t.completed === completed);
-  }
-
-  // Поиск по title
-  if (req.query.search) {
-    const search = req.query.search.toLowerCase();
-    tasks = tasks.filter((t) => t.title.toLowerCase().includes(search));
-  }
-
-  res.json(success(tasks));
-}
-```
-
-<!-- s -->
-
-## Домашнее задание
-
-Полное описание в учебном портале и в ветке урока task
-
-**Краткое описание:**
-
-Расширить API задач:
-
-- Добавить **пагинацию**: `?page=1&limit=10`
-- Добавить **сортировку**: `?sort=createdAt&order=desc`
-- Реализовать **заглушку авторизации** через header `X-User-Id`
-- Добавить поле `userId` к задачам — пользователь видит только свои
 
 <!-- s -->
 
