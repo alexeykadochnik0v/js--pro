@@ -1,0 +1,48 @@
+### Урок 24 — примеры запросов к API (REST Client / Thunder Client)
+
+@base = http://localhost:3000
+
+### Все задачи
+GET {{base}}/api/tasks
+
+### Только невыполненные
+GET {{base}}/api/tasks?completed=false
+
+### Поиск по title
+GET {{base}}/api/tasks?search=express
+
+### Задача по ID
+GET {{base}}/api/tasks/1
+
+### Проверка существования (HEAD)
+HEAD {{base}}/api/tasks/1
+
+### Создать задачу
+POST {{base}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Новая задача"
+}
+
+### Обновить задачу (частично)
+PATCH {{base}}/api/tasks/1
+Content-Type: application/json
+
+{
+  "completed": true
+}
+
+### Удалить задачу
+DELETE {{base}}/api/tasks/1
+
+### --- Ошибки для проверки ---
+
+### 400 — нет title
+POST {{base}}/api/tasks
+Content-Type: application/json
+
+{}
+
+### 404 — несуществующий ID
+GET {{base}}/api/tasks/999
