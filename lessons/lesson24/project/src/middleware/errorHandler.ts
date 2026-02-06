@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { error } from '../utils/response.js';
 
 export function errorHandler(
@@ -7,6 +7,7 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ) {
+  // logger + sentry(error tracker) + monitoring и т.д. ит.д.
   console.error('Error:', err.message);
 
   if (err instanceof SyntaxError && err.status === 400) {

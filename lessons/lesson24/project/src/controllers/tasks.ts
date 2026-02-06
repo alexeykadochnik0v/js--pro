@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
+import type { CreateTaskInput, IdParam, TasksQuery, UpdateTaskInput } from '../schemas/tasks.js';
 import { tasksService } from '../services/tasks.js';
-import { success, error } from '../utils/response.js';
-import type { IdParam, TasksQuery, CreateTaskInput, UpdateTaskInput } from '../schemas/tasks.js';
+import { error, success } from '../utils/response.js';
 
 export const tasksController = {
   getAll(req: Request, res: Response) {
